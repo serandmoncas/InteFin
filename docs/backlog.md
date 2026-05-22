@@ -42,7 +42,7 @@
 > **Objetivo:** Mabel puede hacer una sesión de diagnóstico completa con un cliente real.
 
 ### Cliente — Onboarding / Diagnóstico
-- [ ] `/onboarding/client` — wizard de diagnóstico en 4 secciones:
+- [x] `/onboarding/client` — wizard de diagnóstico en 4 secciones:
   - Sección 1: Perfil (nombre, edad, ocupación, dependientes, pareja, salud/pensión)
   - Sección 2: Situación actual (ingreso, gastos, ahorros, seguro de vida)
   - Sección 3: Activos y deudas (lista activos con valor, lista deudas con tipo)
