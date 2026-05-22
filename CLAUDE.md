@@ -30,6 +30,15 @@ npm run build    # production build + type check
 npm run lint     # ESLint
 ```
 
+## Deploy to Production
+
+```bash
+# Always use prebuilt flow (GitHub auto-deploy uses different env vars)
+vercel pull --yes --environment production
+vercel build --yes --prod
+vercel deploy --prebuilt --prod
+```
+
 ## Environment Variables
 
 ```bash
