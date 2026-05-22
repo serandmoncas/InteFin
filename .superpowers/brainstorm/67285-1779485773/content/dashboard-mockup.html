@@ -1,0 +1,185 @@
+<h2>Mockup — Dashboard del Cliente</h2>
+<p class="subtitle">Vista principal después del diagnóstico. ¿Qué estilo visual prefiere para InteFin?</p>
+
+<div class="options">
+
+  <!-- OPTION A: Dark + Cards con progreso circular -->
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>Dark · Progreso Circular</h3>
+      <p>Dashboard oscuro con anillos de progreso por cuenta. Alta densidad visual, sensación premium.</p>
+      <div style="background:#0f172a;border-radius:8px;padding:14px;margin-top:10px;pointer-events:none">
+        <!-- Header -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div>
+            <div style="color:#f1f5f9;font-size:13px;font-weight:700">Hola, Sergio 👋</div>
+            <div style="color:#64748b;font-size:11px">Salud financiera: <span style="color:#4ade80;font-weight:600">42/100</span></div>
+          </div>
+          <div style="background:#1e293b;border-radius:6px;padding:4px 10px;color:#94a3b8;font-size:11px">Mayo 2026</div>
+        </div>
+        <!-- 4 account cards -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <!-- Imprevisto -->
+          <div style="background:#1e293b;border-radius:8px;padding:10px;border-left:3px solid #f87171">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="color:#94a3b8;font-size:10px;text-transform:uppercase;letter-spacing:1px">Imprevisto</div>
+                <div style="color:#f1f5f9;font-size:14px;font-weight:700;margin-top:2px">$0</div>
+                <div style="color:#64748b;font-size:10px">meta: $5.000.000</div>
+              </div>
+              <div style="position:relative;width:36px;height:36px">
+                <svg viewBox="0 0 36 36" width="36" height="36">
+                  <circle cx="18" cy="18" r="14" fill="none" stroke="#334155" stroke-width="3"/>
+                  <circle cx="18" cy="18" r="14" fill="none" stroke="#f87171" stroke-width="3" stroke-dasharray="0 88" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+                </svg>
+                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#f87171;font-size:9px;font-weight:700">0%</div>
+              </div>
+            </div>
+          </div>
+          <!-- Oxígeno -->
+          <div style="background:#1e293b;border-radius:8px;padding:10px;border-left:3px solid #fb923c">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="color:#94a3b8;font-size:10px;text-transform:uppercase;letter-spacing:1px">Oxígeno</div>
+                <div style="color:#f1f5f9;font-size:14px;font-weight:700;margin-top:2px">$0</div>
+                <div style="color:#64748b;font-size:10px">meta: $30.000.000</div>
+              </div>
+              <div style="position:relative;width:36px;height:36px">
+                <svg viewBox="0 0 36 36" width="36" height="36">
+                  <circle cx="18" cy="18" r="14" fill="none" stroke="#334155" stroke-width="3"/>
+                  <circle cx="18" cy="18" r="14" fill="none" stroke="#fb923c" stroke-width="3" stroke-dasharray="0 88" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+                </svg>
+                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fb923c;font-size:9px;font-weight:700">0%</div>
+              </div>
+            </div>
+          </div>
+          <!-- Retiro -->
+          <div style="background:#1e293b;border-radius:8px;padding:10px;border-left:3px solid #a78bfa">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="color:#94a3b8;font-size:10px;text-transform:uppercase;letter-spacing:1px">Retiro</div>
+                <div style="color:#f1f5f9;font-size:14px;font-weight:700;margin-top:2px">Activo</div>
+                <div style="color:#64748b;font-size:10px">seguro vida</div>
+              </div>
+              <div style="width:36px;height:36px;background:#2d1f63;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px">✓</div>
+            </div>
+          </div>
+          <!-- Inversiones -->
+          <div style="background:#1e293b;border-radius:8px;padding:10px;border-left:3px solid #34d399">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="color:#94a3b8;font-size:10px;text-transform:uppercase;letter-spacing:1px">Inversiones</div>
+                <div style="color:#f1f5f9;font-size:14px;font-weight:700;margin-top:2px">$0</div>
+                <div style="color:#64748b;font-size:10px">pendiente</div>
+              </div>
+              <div style="width:36px;height:36px;background:#064e3b;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#34d399;font-size:14px;font-weight:700">→</div>
+            </div>
+          </div>
+        </div>
+        <!-- Next step -->
+        <div style="background:#1e3a5f;border-radius:6px;padding:8px 10px;margin-top:8px;display:flex;justify-content:space-between;align-items:center">
+          <div style="color:#93c5fd;font-size:11px">📌 Próximo paso: Abrir cuenta de emergencia</div>
+          <div style="color:#60a5fa;font-size:11px;font-weight:600">Ver →</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION B: Light + Barras horizontales -->
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>Light · Barras de Progreso</h3>
+      <p>Dashboard claro y limpio con barras de progreso horizontales. Más legible, más accesible.</p>
+      <div style="background:#f8fafc;border-radius:8px;padding:14px;margin-top:10px;pointer-events:none;border:1px solid #e2e8f0">
+        <!-- Header -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+          <div>
+            <div style="color:#0f172a;font-size:13px;font-weight:700">Mi Plan Financiero</div>
+            <div style="color:#64748b;font-size:11px">Sergio Monsalve · Mayo 2026</div>
+          </div>
+          <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:20px;padding:4px 10px;color:#3b82f6;font-size:11px;font-weight:600">Score 42</div>
+        </div>
+        <!-- Account rows -->
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span style="color:#374151;font-size:11px;font-weight:600">🔴 Imprevisto <span style="color:#9ca3af;font-weight:400">(1 mes)</span></span>
+              <span style="color:#374151;font-size:11px">$0 / $5M</span>
+            </div>
+            <div style="background:#fee2e2;border-radius:4px;height:8px"><div style="background:#ef4444;height:8px;border-radius:4px;width:0%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span style="color:#374151;font-size:11px;font-weight:600">🟠 Oxígeno <span style="color:#9ca3af;font-weight:400">(6 meses)</span></span>
+              <span style="color:#374151;font-size:11px">$0 / $30M</span>
+            </div>
+            <div style="background:#ffedd5;border-radius:4px;height:8px"><div style="background:#f97316;height:8px;border-radius:4px;width:0%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span style="color:#374151;font-size:11px;font-weight:600">🟣 Retiro / Protección</span>
+              <span style="color:#10b981;font-size:11px;font-weight:600">✓ Activo</span>
+            </div>
+            <div style="background:#ede9fe;border-radius:4px;height:8px"><div style="background:#8b5cf6;height:8px;border-radius:4px;width:100%"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+              <span style="color:#374151;font-size:11px;font-weight:600">🟢 Inversiones</span>
+              <span style="color:#374151;font-size:11px">$0 / pendiente</span>
+            </div>
+            <div style="background:#dcfce7;border-radius:4px;height:8px"><div style="background:#22c55e;height:8px;border-radius:4px;width:0%"></div></div>
+          </div>
+        </div>
+        <!-- CTA -->
+        <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:6px;padding:8px 10px;margin-top:10px">
+          <div style="color:#166534;font-size:11px">🎯 Enfócate en Imprevisto — es tu primera prioridad</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OPTION C: Mixed dark/light con net worth hero -->
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>Hero Patrimonio Neto + Cards</h3>
+      <p>Número grande de patrimonio neto arriba como "hero", las 4 cuentas abajo como cards. Storytelling financiero.</p>
+      <div style="background:#0f172a;border-radius:8px;overflow:hidden;margin-top:10px;pointer-events:none">
+        <!-- Hero -->
+        <div style="background:linear-gradient(135deg,#1e3a5f,#0f172a);padding:14px;text-align:center;border-bottom:1px solid #1e293b">
+          <div style="color:#64748b;font-size:10px;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px">Patrimonio Neto</div>
+          <div style="color:#f1f5f9;font-size:24px;font-weight:800;letter-spacing:-1px">-$50.000.000</div>
+          <div style="color:#f87171;font-size:10px;margin-top:2px">↑ Trabajando en ello — Salud: 42/100</div>
+        </div>
+        <!-- Mini cards 2x2 -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1e293b">
+          <div style="background:#0f172a;padding:10px;text-align:center">
+            <div style="color:#f87171;font-size:10px;font-weight:600">IMPREVISTO</div>
+            <div style="color:#f1f5f9;font-size:13px;font-weight:700;margin-top:2px">$0</div>
+            <div style="background:#1e293b;border-radius:10px;height:4px;margin-top:5px"><div style="background:#f87171;height:4px;border-radius:10px;width:0%"></div></div>
+          </div>
+          <div style="background:#0f172a;padding:10px;text-align:center">
+            <div style="color:#fb923c;font-size:10px;font-weight:600">OXÍGENO</div>
+            <div style="color:#f1f5f9;font-size:13px;font-weight:700;margin-top:2px">$0</div>
+            <div style="background:#1e293b;border-radius:10px;height:4px;margin-top:5px"><div style="background:#fb923c;height:4px;border-radius:10px;width:0%"></div></div>
+          </div>
+          <div style="background:#0f172a;padding:10px;text-align:center">
+            <div style="color:#a78bfa;font-size:10px;font-weight:600">RETIRO</div>
+            <div style="color:#34d399;font-size:13px;font-weight:700;margin-top:2px">✓ OK</div>
+            <div style="background:#1e293b;border-radius:10px;height:4px;margin-top:5px"><div style="background:#a78bfa;height:4px;border-radius:10px;width:100%"></div></div>
+          </div>
+          <div style="background:#0f172a;padding:10px;text-align:center">
+            <div style="color:#34d399;font-size:10px;font-weight:600">INVERSIONES</div>
+            <div style="color:#f1f5f9;font-size:13px;font-weight:700;margin-top:2px">$0</div>
+            <div style="background:#1e293b;border-radius:10px;height:4px;margin-top:5px"><div style="background:#34d399;height:4px;border-radius:10px;width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<p style="color:#64748b;font-size:13px;margin-top:16px;text-align:center">Haz clic en el estilo que más te gusta, o dime en el terminal si quieres mezclar elementos de varias opciones.</p>

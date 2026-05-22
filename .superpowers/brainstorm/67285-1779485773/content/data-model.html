@@ -1,0 +1,125 @@
+<h2>Modelo de Datos — InteFin</h2>
+<p class="subtitle">Schema PostgreSQL con multi-tenant via <code>organization_id</code> en todas las tablas</p>
+
+<div class="section">
+  <h3>🏢 Capa de Tenancy (Multi-coach)</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px">
+    <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px">
+      <div style="color:#60a5fa;font-weight:700;font-size:13px;font-family:monospace;margin-bottom:10px">organizations</div>
+      <div style="font-size:12px;font-family:monospace;line-height:1.8">
+        <span style="color:#f59e0b">id</span><span style="color:#64748b"> uuid PK</span><br>
+        <span style="color:#a3e635">name</span><span style="color:#64748b"> text</span><br>
+        <span style="color:#a3e635">slug</span><span style="color:#64748b"> text UNIQUE</span><span style="color:#475569"> — mabel-alvarez</span><br>
+        <span style="color:#a3e635">logo_url</span><span style="color:#64748b"> text</span><br>
+        <span style="color:#a3e635">brand_color</span><span style="color:#64748b"> text</span><br>
+        <span style="color:#a3e635">plan</span><span style="color:#64748b"> enum(free|pro|enterprise)</span><br>
+        <span style="color:#a3e635">stripe_customer_id</span><span style="color:#64748b"> text</span><br>
+        <span style="color:#a3e635">created_at</span><span style="color:#64748b"> timestamptz</span>
+      </div>
+    </div>
+    <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px">
+      <div style="color:#60a5fa;font-weight:700;font-size:13px;font-family:monospace;margin-bottom:10px">profiles <span style="color:#64748b;font-weight:400">(extends auth.users)</span></div>
+      <div style="font-size:12px;font-family:monospace;line-height:1.8">
+        <span style="color:#f59e0b">id</span><span style="color:#64748b"> uuid PK → auth.users</span><br>
+        <span style="color:#a3e635">organization_id</span><span style="color:#64748b"> uuid FK → organizations</span><br>
+        <span style="color:#a3e635">role</span><span style="color:#64748b"> enum(super_admin|coach|client)</span><br>
+        <span style="color:#a3e635">full_name</span><span style="color:#64748b"> text</span><br>
+        <span style="color:#a3e635">avatar_url</span><span style="color:#64748b"> text</span><br>
+        <span style="color:#a3e635">locale</span><span style="color:#64748b"> enum(es|en)</span><br>
+        <span style="color:#a3e635">onboarding_completed</span><span style="color:#64748b"> boolean</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>👤 Capa de Clientes</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px">
+    <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px">
+      <div style="color:#34d399;font-weight:700;font-size:13px;font-family:monospace;margin-bottom:10px">client_profiles</div>
+      <div style="font-size:12px;font-family:monospace;line-height:1.8">
+        <span style="color:#f59e0b">id</span><span style="color:#64748b"> uuid PK</span><br>
+        <span style="color:#a3e635">user_id</span><span style="color:#64748b"> uuid FK → profiles</span><br>
+        <span style="color:#a3e635">organization_id</span><span style="color:#64748b"> uuid FK → organizations</span><br>
+        <span style="color:#a3e635">coach_id</span><span style="color:#64748b"> uuid FK → profiles</span><br>
+        <span style="color:#a3e635">occupation</span><span style="color:#64748b"> text</span><br>
+        <span style="color:#a3e635">birth_year</span><span style="color:#64748b"> int</span><br>
+        <span style="color:#a3e635">dependents_count</span><span style="color:#64748b"> int</span><br>
+        <span style="color:#a3e635">monthly_income</span><span style="color:#64748b"> numeric(15,2)</span><br>
+        <span style="color:#a3e635">monthly_expenses</span><span style="color:#64748b"> numeric(15,2)</span><br>
+        <span style="color:#a3e635">status</span><span style="color:#64748b"> enum(lead|active|paused)</span>
+      </div>
+    </div>
+    <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px">
+      <div style="color:#34d399;font-weight:700;font-size:13px;font-family:monospace;margin-bottom:10px">financial_diagnostics <span style="color:#64748b;font-weight:400">(inmutable)</span></div>
+      <div style="font-size:12px;font-family:monospace;line-height:1.8">
+        <span style="color:#f59e0b">id</span><span style="color:#64748b"> uuid PK</span><br>
+        <span style="color:#a3e635">client_id</span><span style="color:#64748b"> uuid FK → client_profiles</span><br>
+        <span style="color:#a3e635">organization_id</span><span style="color:#64748b"> uuid FK</span><br>
+        <span style="color:#a3e635">total_assets</span><span style="color:#64748b"> numeric(15,2)</span><br>
+        <span style="color:#a3e635">liquid_assets</span><span style="color:#64748b"> numeric(15,2)</span><br>
+        <span style="color:#a3e635">total_debts</span><span style="color:#64748b"> numeric(15,2)</span><br>
+        <span style="color:#a3e635">net_worth</span><span style="color:#64748b"> numeric(15,2)</span><br>
+        <span style="color:#a3e635">has_health_insurance</span><span style="color:#64748b"> boolean</span><br>
+        <span style="color:#a3e635">has_pension</span><span style="color:#64748b"> boolean</span><br>
+        <span style="color:#a3e635">primary_goal</span><span style="color:#64748b"> text</span><br>
+        <span style="color:#a3e635">recorded_at</span><span style="color:#64748b"> timestamptz</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>💰 Capa Financiera (Las 4 Cuentas)</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px">
+    <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px">
+      <div style="color:#fbbf24;font-weight:700;font-size:13px;font-family:monospace;margin-bottom:10px">financial_accounts</div>
+      <div style="font-size:12px;font-family:monospace;line-height:1.8">
+        <span style="color:#f59e0b">id</span><span style="color:#64748b"> uuid PK</span><br>
+        <span style="color:#a3e635">client_id</span><span style="color:#64748b"> uuid FK</span><br>
+        <span style="color:#a3e635">organization_id</span><span style="color:#64748b"> uuid FK</span><br>
+        <span style="color:#a3e635">account_type</span><span style="color:#64748b"> enum:</span><br>
+        <span style="color:#64748b">  — </span><span style="color:#f87171">imprevisto</span><span style="color:#64748b"> (1 mes salario)</span><br>
+        <span style="color:#64748b">  — </span><span style="color:#fb923c">oxígeno</span><span style="color:#64748b"> (6 meses)</span><br>
+        <span style="color:#64748b">  — </span><span style="color:#a78bfa">retiro</span><span style="color:#64748b"> (seguro vida)</span><br>
+        <span style="color:#64748b">  — </span><span style="color:#34d399">inversiones</span><br>
+        <span style="color:#a3e635">target_amount</span><span style="color:#64748b"> numeric(15,2)</span><br>
+        <span style="color:#a3e635">current_amount</span><span style="color:#64748b"> numeric(15,2)</span><br>
+        <span style="color:#a3e635">institution</span><span style="color:#64748b"> text</span>
+      </div>
+    </div>
+    <div style="background:#0f172a;border:1px solid #334155;border-radius:8px;padding:16px">
+      <div style="color:#fbbf24;font-weight:700;font-size:13px;font-family:monospace;margin-bottom:10px">account_snapshots <span style="color:#64748b;font-weight:400">(historial mensual)</span></div>
+      <div style="font-size:12px;font-family:monospace;line-height:1.8">
+        <span style="color:#f59e0b">id</span><span style="color:#64748b"> uuid PK</span><br>
+        <span style="color:#a3e635">account_id</span><span style="color:#64748b"> uuid FK</span><br>
+        <span style="color:#a3e635">organization_id</span><span style="color:#64748b"> uuid FK</span><br>
+        <span style="color:#a3e635">amount</span><span style="color:#64748b"> numeric(15,2)</span><br>
+        <span style="color:#a3e635">progress_pct</span><span style="color:#64748b"> numeric(5,2)</span><br>
+        <span style="color:#a3e635">notes</span><span style="color:#64748b"> text</span><br>
+        <span style="color:#a3e635">snapshot_month</span><span style="color:#64748b"> date (día 1)</span><br>
+        <br>
+        <span style="color:#475569;font-style:italic">-- goals</span><br>
+        <span style="color:#a3e635">goals</span><span style="color:#64748b"> → tabla separada</span><br>
+        <span style="color:#a3e635">sessions</span><span style="color:#64748b"> → tabla separada</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>🔒 Seguridad: RLS Pattern</h3>
+  <div style="background:#0f172a;border:1px solid #166534;border-radius:8px;padding:16px;margin-top:12px">
+    <div style="font-size:12px;font-family:monospace;color:#4ade80;line-height:1.8">
+      <span style="color:#64748b">-- Política en TODAS las tablas de datos:</span><br>
+      CREATE POLICY "org_isolation" ON financial_accounts<br>
+      &nbsp;&nbsp;USING (<span style="color:#fbbf24">organization_id = get_my_org_id()</span>);<br>
+      <br>
+      <span style="color:#64748b">-- Coach solo ve sus clientes:</span><br>
+      CREATE POLICY "coach_clients" ON client_profiles<br>
+      &nbsp;&nbsp;USING (coach_id = auth.uid() OR role = 'super_admin');
+    </div>
+  </div>
+</div>
+
+<p style="color:#64748b;font-size:13px;margin-top:16px;text-align:center">¿Este modelo de datos tiene sentido? ¿Falta alguna entidad clave? Dímelo en el terminal.</p>
