@@ -12,6 +12,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      client_invitations: {
+        Row: {
+          id: string
+          email: string
+          full_name: string | null
+          organization_id: string
+          coach_id: string
+          used: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          email: string
+          full_name?: string | null
+          organization_id: string
+          coach_id: string
+          used?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          full_name?: string | null
+          organization_id?: string
+          coach_id?: string
+          used?: boolean
+          created_at?: string
+        }
+        Relationships: []
+      }
       account_snapshots: {
         Row: {
           account_id: string

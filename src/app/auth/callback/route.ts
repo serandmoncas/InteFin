@@ -33,30 +33,85 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${origin}/auth/login?error=auth_failed`)
   }
 
-  // Redirect based on role
   const { data: { user } } = await supabase.auth.getUser()
-  if (user) {
+  if (!user) return NextResponse.redirect(`${origin}/auth/login`)
+
+  // Check if this is a client invited via inviteUserByEmail
+  const meta = user.user_metadata as {
+    role?: string
+    organization_id?: string
+    coach_id?: string
+    full_name?: string
+  }
+
+  const isInvitedClient =
+    meta?.role === "client" &&
+    meta?.organization_id &&
+    meta?.coach_id
+
+  if (isInvitedClient) {
+    // Look up existing profile (auto-created by trigger with role=client)
     const { data: profile } = await supabase
       .from("profiles")
-      .select("role, onboarding_completed")
+      .select("onboarding_completed, organization_id")
       .eq("id", user.id)
       .single()
 
-    if (!profile) {
-      // New user — send to onboarding
-      return NextResponse.redirect(`${origin}/onboarding`)
+    // Attach to the inviting org if not yet done
+    if (!profile?.organization_id) {
+      await supabase
+        .from("profiles")
+        .update({
+          full_name:       meta.full_name ?? "",
+          role:            "client",
+          organization_id: meta.organization_id,
+        })
+        .eq("id", user.id)
     }
 
-    if (!profile.onboarding_completed) {
-      return NextResponse.redirect(`${origin}/onboarding`)
+    // Create client_profile if it doesn't exist yet
+    const { data: existingClient } = await supabase
+      .from("client_profiles")
+      .select("id, onboarding_completed: status")
+      .eq("user_id", user.id)
+      .maybeSingle()
+
+    if (!existingClient) {
+      await supabase.from("client_profiles").insert({
+        user_id:         user.id,
+        organization_id: meta.organization_id!,
+        coach_id:        meta.coach_id!,
+        status:          "lead",
+      })
     }
 
-    if (profile.role === "coach") {
-      return NextResponse.redirect(`${origin}/coach/overview`)
-    }
+    // Mark invitation as used
+    await supabase
+      .from("client_invitations")
+      .update({ used: true })
+      .eq("email", user.email!)
+      .eq("organization_id", meta.organization_id!)
 
+    if (!profile?.onboarding_completed) {
+      return NextResponse.redirect(`${origin}/onboarding/client`)
+    }
     return NextResponse.redirect(`${origin}/app/dashboard`)
   }
 
-  return NextResponse.redirect(`${origin}${next}`)
+  // Regular login — redirect by role
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role, onboarding_completed")
+    .eq("id", user.id)
+    .single()
+
+  if (!profile || !profile.onboarding_completed) {
+    return NextResponse.redirect(`${origin}/onboarding`)
+  }
+
+  if (profile.role === "coach" || profile.role === "super_admin") {
+    return NextResponse.redirect(`${origin}/coach/overview`)
+  }
+
+  return NextResponse.redirect(`${origin}/app/dashboard`)
 }
