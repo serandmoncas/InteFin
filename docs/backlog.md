@@ -115,6 +115,59 @@
 
 ---
 
+---
+
+## 🚀 Despliegue
+
+> Tickets de infraestructura para llevar el MVP a producción. Pueden hacerse en paralelo con Fase 1.
+
+### Vercel
+- [ ] **DEPLOY-01** Crear proyecto en Vercel y conectar repositorio GitHub
+  - `vercel link` o desde dashboard.vercel.com → New Project
+- [ ] **DEPLOY-02** Configurar variables de entorno en Vercel (Production + Preview):
+  ```
+  NEXT_PUBLIC_SUPABASE_URL
+  NEXT_PUBLIC_SUPABASE_ANON_KEY
+  SUPABASE_SERVICE_ROLE_KEY
+  NEXT_PUBLIC_SITE_URL=https://<tu-dominio>.vercel.app
+  ```
+- [ ] **DEPLOY-03** Verificar build exitoso en Vercel (preview deployment)
+- [ ] **DEPLOY-04** Configurar dominio personalizado (ej: `intefin.app` o `app.mabelcoach.com`)
+
+### Supabase — Configuración para Producción
+- [ ] **DEPLOY-05** Agregar URL de producción en Supabase Auth → URL Configuration → Redirect URLs:
+  ```
+  https://<dominio-produccion>/auth/callback
+  https://<preview>.vercel.app/auth/callback
+  ```
+- [ ] **DEPLOY-06** Configurar `Site URL` en Supabase Auth Settings con el dominio de producción
+- [ ] **DEPLOY-07** Revisar límites del plan Free de Supabase (500 MB DB, 50k MAU) — subir a Pro si se supera
+
+### Email (Resend)
+- [ ] **DEPLOY-08** Crear cuenta en [resend.com](https://resend.com) y obtener API key
+- [ ] **DEPLOY-09** Agregar `RESEND_API_KEY` a `.env.local` y a Vercel env vars
+- [ ] **DEPLOY-10** Verificar dominio de envío en Resend (para que los emails lleguen desde `hola@intefin.app` en vez de `onboarding@resend.dev`)
+- [ ] **DEPLOY-11** Reemplazar `inviteUserByEmail` (email de Supabase) por email personalizado con Resend + template con branding de InteFin
+
+### GitHub
+- [ ] **DEPLOY-12** Crear repositorio en GitHub y hacer push del branch `main`
+  ```bash
+  git remote add origin https://github.com/<usuario>/intefin.git
+  git push -u origin main
+  ```
+- [ ] **DEPLOY-13** Configurar protección de branch `main` (require PR, no force push)
+
+### Pre-lanzamiento MVP
+- [ ] **DEPLOY-14** Smoke test en producción:
+  - Coach puede registrarse y crear organización
+  - Coach puede invitar cliente
+  - Cliente puede completar diagnóstico
+  - Dashboard del cliente muestra las 4 cuentas
+- [ ] **DEPLOY-15** Configurar Vercel Analytics (gratuito) para monitorear uso
+- [ ] **DEPLOY-16** Probar magic link desde dominio de producción (email llega, link funciona)
+
+---
+
 ## 🔲 Pendiente — Fase 3 Plataforma
 
 - [ ] Marketplace de coaches en intelfin.app
