@@ -33,11 +33,13 @@ npm run lint     # ESLint
 ## Deploy to Production
 
 ```bash
-# Always use prebuilt flow (GitHub auto-deploy uses different env vars)
-vercel pull --yes --environment production
-vercel build --yes --prod
-vercel deploy --prebuilt --prod
+# Deploy directly — Vercel cloud build has access to encrypted env vars
+# DO NOT use --prebuilt: vercel pull downloads empty strings for encrypted vars
+vercel deploy --prod --yes
 ```
+
+> ⚠️ Never use `vercel build` locally + `--prebuilt`: the `vercel pull` command
+> downloads encrypted env vars as empty strings, breaking `NEXT_PUBLIC_*` at runtime.
 
 ## Environment Variables
 
