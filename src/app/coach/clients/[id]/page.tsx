@@ -4,6 +4,7 @@ import { calculateScore } from "@/lib/score/calculateScore"
 import { ScoreBadge } from "@/components/dashboard/ScoreBadge"
 import { SessionsPanel } from "@/components/coach/SessionsPanel"
 import { AccountTargetsEditor } from "@/components/coach/AccountTargetsEditor"
+import { CoachNotes } from "@/components/coach/CoachNotes"
 import type { AccountType } from "@/lib/supabase/types"
 
 const ACCOUNT_ORDER: AccountType[] = ["imprevisto", "oxigeno", "retiro", "inversiones"]
@@ -46,7 +47,7 @@ export default async function ClientDetailPage({
     .from("client_profiles")
     .select(`
       id, occupation, birth_year, dependents_count, has_partner,
-      monthly_income, monthly_expenses, status, created_at,
+      monthly_income, monthly_expenses, status, created_at, coach_notes,
       profiles(full_name)
     `)
     .eq("id", id)
@@ -121,6 +122,8 @@ export default async function ClientDetailPage({
         </div>
         <ScoreBadge score={score} />
       </div>
+
+      <CoachNotes clientId={id} initialNotes={clientProfile.coach_notes ?? null} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
         {/* Personal info */}

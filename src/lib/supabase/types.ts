@@ -82,6 +82,7 @@ export type Database = {
         Row: {
           birth_year: number | null
           coach_id: string
+          coach_notes: string | null
           created_at: string
           dependents_count: number
           has_partner: boolean
@@ -96,6 +97,7 @@ export type Database = {
         Insert: {
           birth_year?: number | null
           coach_id: string
+          coach_notes?: string | null
           created_at?: string
           dependents_count?: number
           has_partner?: boolean
@@ -110,6 +112,7 @@ export type Database = {
         Update: {
           birth_year?: number | null
           coach_id?: string
+          coach_notes?: string | null
           created_at?: string
           dependents_count?: number
           has_partner?: boolean
