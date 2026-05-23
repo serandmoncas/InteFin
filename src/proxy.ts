@@ -4,12 +4,18 @@ import { type NextRequest, NextResponse } from "next/server"
 const PROTECTED_PREFIXES = ["/app", "/coach", "/admin", "/onboarding"]
 
 export async function proxy(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({ request })
+  const supabaseUrl  = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const supabaseKey  = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
+  // If env vars are missing, allow request through (don't 500)
+  if (!supabaseUrl || !supabaseKey) {
+    return NextResponse.next({ request })
+  }
+
+  try {
+    let supabaseResponse = NextResponse.next({ request })
+
+    const supabase = createServerClient(supabaseUrl, supabaseKey, {
       cookies: {
         getAll() {
           return request.cookies.getAll()
@@ -24,23 +30,26 @@ export async function proxy(request: NextRequest) {
           )
         },
       },
+    })
+
+    // Refresh session — required for Server Components to read auth state
+    const { data: { user } } = await supabase.auth.getUser()
+
+    const { pathname } = request.nextUrl
+    const isProtected  = PROTECTED_PREFIXES.some((p) => pathname.startsWith(p))
+
+    if (isProtected && !user) {
+      const loginUrl = request.nextUrl.clone()
+      loginUrl.pathname = "/auth/login"
+      loginUrl.searchParams.set("redirectTo", pathname)
+      return NextResponse.redirect(loginUrl)
     }
-  )
 
-  // Refresh session — do not remove this
-  const { data: { user } } = await supabase.auth.getUser()
-
-  const { pathname } = request.nextUrl
-  const isProtected = PROTECTED_PREFIXES.some((p) => pathname.startsWith(p))
-
-  if (isProtected && !user) {
-    const loginUrl = request.nextUrl.clone()
-    loginUrl.pathname = "/auth/login"
-    loginUrl.searchParams.set("redirectTo", pathname)
-    return NextResponse.redirect(loginUrl)
+    return supabaseResponse
+  } catch {
+    // On any unexpected error, let the request through
+    return NextResponse.next({ request })
   }
-
-  return supabaseResponse
 }
 
 export const config = {
