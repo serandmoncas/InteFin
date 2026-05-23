@@ -39,6 +39,9 @@ yarn-error.log*
 # superpowers brainstorming sessions
 .superpowers/
 
+# playwright test snapshots (smoke tests)
+.playwright-mcp/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
