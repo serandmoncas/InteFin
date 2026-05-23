@@ -1,0 +1,14 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e6]: IF
+      - heading "InteFin" [level=1] [ref=e7]
+      - paragraph [ref=e8]: Inteligencia Financiera
+    - generic [ref=e18]:
+      - generic [ref=e19]: 📧
+      - heading "Revisa tu correo" [level=2] [ref=e20]
+      - paragraph [ref=e21]:
+        - text: Enviamos un link de acceso a smonsalve@gmail.com.
+        - text: Haz clic en el link para ingresar.
+      - button "Usar otro correo" [ref=e22]
+  - alert [ref=e17]

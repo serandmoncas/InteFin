@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { calculateScore } from "@/lib/score/calculateScore"
 import { ScoreBadge } from "@/components/dashboard/ScoreBadge"
+import { SessionsPanel } from "@/components/coach/SessionsPanel"
 import type { AccountType } from "@/lib/supabase/types"
 
 const ACCOUNT_ORDER: AccountType[] = ["imprevisto", "oxigeno", "retiro", "inversiones"]
@@ -68,6 +69,12 @@ export default async function ClientDetailPage({
     .select("*")
     .eq("client_id", id)
     .order("created_at")
+
+  const { data: sessions } = await supabase
+    .from("coaching_sessions")
+    .select("*")
+    .eq("client_id", id)
+    .order("session_number", { ascending: false })
 
   const sortedAccounts = accounts
     ? ACCOUNT_ORDER.map((t) => accounts.find((a) => a.account_type === t)).filter(Boolean) as typeof accounts
@@ -214,12 +221,8 @@ export default async function ClientDetailPage({
         )}
       </div>
 
-      {/* Notes placeholder (Phase 2) */}
-      <div className="bg-[#0f172a] border border-dashed border-slate-700 rounded-xl p-5 text-center">
-        <p className="text-slate-600 text-sm">
-          📝 <strong className="text-slate-500">Notas privadas del coach</strong> — disponible en Fase 2
-        </p>
-      </div>
+      {/* Sessions */}
+      <SessionsPanel clientId={id} sessions={sessions ?? []} />
     </div>
   )
 }
