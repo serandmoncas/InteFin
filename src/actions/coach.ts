@@ -3,7 +3,14 @@
 import { createClient } from "@/lib/supabase/server"
 import { createAdminClient } from "@/lib/supabase/admin"
 
-export async function inviteClient(formData: FormData) {
+export interface InviteResult {
+  success?: boolean
+  email?: string
+  inviteLink?: string  // shareable URL for the coach to send via WhatsApp/etc
+  error?: string
+}
+
+export async function inviteClient(formData: FormData): Promise<InviteResult> {
   const email    = (formData.get("email") as string).trim().toLowerCase()
   const fullName = (formData.get("full_name") as string).trim()
 
@@ -26,7 +33,7 @@ export async function inviteClient(formData: FormData) {
   const orgId   = profile.organization_id
   const coachId = user.id
 
-  // Upsert invitation record (idempotent — safe to re-invite)
+  // Save / refresh invitation record
   const { error: inviteRecordError } = await supabase
     .from("client_invitations")
     .upsert(
@@ -35,29 +42,45 @@ export async function inviteClient(formData: FormData) {
     )
 
   if (inviteRecordError) {
-    return { error: "Error guardando la invitación. Intenta de nuevo." }
+    return { error: "Error guardando la invitación." }
   }
 
-  // Send invite email via Supabase admin (requires service_role key)
   const admin = createAdminClient()
-  const redirectTo = `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/auth/callback?next=/onboarding/client`
+  const siteUrl  = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"
+  const redirectTo = `${siteUrl}/auth/callback?next=/onboarding/client`
 
-  const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(email, {
-    redirectTo,
-    data: {
-      full_name:       fullName,
-      organization_id: orgId,
-      coach_id:        coachId,
-      role:            "client",
-    },
+  const metadata = {
+    full_name:       fullName,
+    organization_id: orgId,
+    coach_id:        coachId,
+    role:            "client",
+  }
+
+  // Try to create the user first (idempotent — ignore "already registered")
+  const { error: createError } = await admin.auth.admin.createUser({
+    email,
+    email_confirm: true,        // skip the confirmation email
+    user_metadata: metadata,
   })
 
-  if (inviteError) {
-    // User might already exist — still OK, invitation record saved
-    if (!inviteError.message.includes("already been registered")) {
-      return { error: `Error enviando invitación: ${inviteError.message}` }
-    }
+  if (createError && !createError.message.toLowerCase().includes("already")) {
+    return { error: `No se pudo crear la cuenta: ${createError.message}` }
   }
 
-  return { success: true, email }
+  // Generate a magic link (does NOT send email — we control distribution)
+  const { data: linkData, error: linkError } = await admin.auth.admin.generateLink({
+    type:    "magiclink",
+    email,
+    options: { redirectTo },
+  })
+
+  if (linkError || !linkData?.properties?.action_link) {
+    return { error: `No se pudo generar el link: ${linkError?.message ?? "error desconocido"}` }
+  }
+
+  return {
+    success:    true,
+    email,
+    inviteLink: linkData.properties.action_link,
+  }
 }

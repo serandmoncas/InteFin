@@ -1,17 +1,19 @@
 "use client"
 
 import { useState, useTransition } from "react"
-import { inviteClient } from "@/actions/coach"
+import { inviteClient, type InviteResult } from "@/actions/coach"
 
 export default function InvitePage() {
   const [isPending, startTransition] = useTransition()
-  const [email, setEmail]         = useState("")
-  const [fullName, setFullName]   = useState("")
-  const [result, setResult]       = useState<{ success?: boolean; email?: string; error?: string } | null>(null)
+  const [email, setEmail]       = useState("")
+  const [fullName, setFullName] = useState("")
+  const [result, setResult]     = useState<InviteResult | null>(null)
+  const [copied, setCopied]     = useState(false)
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setResult(null)
+    setCopied(false)
     const formData = new FormData(e.currentTarget)
     startTransition(async () => {
       const res = await inviteClient(formData)
@@ -20,29 +22,74 @@ export default function InvitePage() {
     })
   }
 
+  function copyLink() {
+    if (!result?.inviteLink) return
+    navigator.clipboard.writeText(result.inviteLink)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  function shareWhatsApp() {
+    if (!result?.inviteLink) return
+    const text = encodeURIComponent(
+      `¡Hola! Te invité a InteFin para hacer tu diagnóstico financiero. Entra aquí: ${result.inviteLink}`
+    )
+    window.open(`https://wa.me/?text=${text}`, "_blank")
+  }
+
   return (
     <div className="max-w-lg">
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-100">Invitar cliente</h1>
         <p className="text-slate-400 text-sm mt-1">
-          El cliente recibirá un email con acceso a su diagnóstico financiero.
+          Generamos un link único — compártelo por WhatsApp o como prefieras.
         </p>
       </div>
 
       <div className="bg-[#0f172a] border border-slate-800 rounded-xl p-6">
         {result?.success ? (
-          <div className="text-center py-4">
-            <div className="text-4xl mb-3">✅</div>
-            <h2 className="text-slate-100 font-semibold mb-1">Invitación enviada</h2>
-            <p className="text-slate-400 text-sm">
-              Se envió un link de acceso a{" "}
-              <span className="text-indigo-400 font-medium">{result.email}</span>.
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-2xl">✅</span>
+              <h2 className="text-slate-100 font-semibold">Link listo para compartir</h2>
+            </div>
+
+            <p className="text-slate-400 text-sm mb-4">
+              Para <span className="text-indigo-400 font-medium">{result.email}</span>
             </p>
+
+            {/* Link box */}
+            <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 mb-4">
+              <p className="text-slate-300 text-xs font-mono break-all leading-relaxed">
+                {result.inviteLink}
+              </p>
+            </div>
+
+            {/* Share actions */}
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              <button
+                onClick={copyLink}
+                className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium px-4 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2"
+              >
+                {copied ? "✓ Copiado" : "📋 Copiar link"}
+              </button>
+              <button
+                onClick={shareWhatsApp}
+                className="bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2"
+              >
+                💬 WhatsApp
+              </button>
+            </div>
+
+            <div className="bg-amber-950/40 border border-amber-900/50 rounded-lg px-3 py-2.5 text-xs text-amber-300/80 mb-4">
+              ⚠️ El link funciona <strong>una sola vez</strong> y expira en 1 hora. Si tu cliente no lo usa a tiempo, vuelve a generar uno.
+            </div>
+
             <button
               onClick={() => setResult(null)}
-              className="mt-5 text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+              className="w-full text-sm text-indigo-400 hover:text-indigo-300 transition-colors py-2"
             >
-              Invitar otra persona
+              Invitar a otra persona →
             </button>
           </div>
         ) : (
@@ -90,7 +137,7 @@ export default function InvitePage() {
               disabled={isPending || !email || !fullName}
               className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium py-2.5 rounded-lg text-sm transition-colors"
             >
-              {isPending ? "Enviando invitación..." : "Enviar invitación ✉️"}
+              {isPending ? "Generando link..." : "Generar invitación 🔗"}
             </button>
           </form>
         )}
@@ -101,10 +148,10 @@ export default function InvitePage() {
         <h3 className="text-slate-300 text-sm font-semibold mb-3">¿Cómo funciona?</h3>
         <ol className="space-y-2">
           {[
-            "Tu cliente recibe un email con un link de acceso",
-            "Hace clic y se registra con su correo (sin contraseña)",
-            "Completa el formulario de diagnóstico financiero",
-            "Tú ves sus datos aquí antes de la sesión",
+            "Generas un link único para tu cliente",
+            "Lo compartes por WhatsApp, email o como prefieras",
+            "Tu cliente hace clic, entra automáticamente",
+            "Completa el formulario de diagnóstico antes de la sesión",
           ].map((step, i) => (
             <li key={i} className="flex items-start gap-3 text-sm text-slate-400">
               <span className="text-indigo-400 font-bold shrink-0">{i + 1}.</span>
