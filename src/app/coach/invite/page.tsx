@@ -42,24 +42,33 @@ export default function InvitePage() {
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-slate-100">Invitar cliente</h1>
         <p className="text-slate-400 text-sm mt-1">
-          Generamos un link único — compártelo por WhatsApp o como prefieras.
+          Le enviamos un email con su link de acceso. También puedes compartirlo tú directamente.
         </p>
       </div>
 
       <div className="bg-[#0f172a] border border-slate-800 rounded-xl p-6">
         {result?.success ? (
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">✅</span>
-              <h2 className="text-slate-100 font-semibold">Link listo para compartir</h2>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-2xl">📨</span>
+              <h2 className="text-slate-100 font-semibold">Invitación enviada</h2>
             </div>
 
-            <p className="text-slate-400 text-sm mb-4">
-              Para <span className="text-indigo-400 font-medium">{result.email}</span>
+            <div className="bg-emerald-950/30 border border-emerald-900/40 rounded-lg px-3 py-2.5 mb-4">
+              <p className="text-emerald-300 text-sm">
+                ✓ Email enviado a <span className="font-semibold">{result.email}</span>
+              </p>
+              <p className="text-emerald-400/70 text-xs mt-0.5">
+                Revisa también la carpeta de spam por si acaso.
+              </p>
+            </div>
+
+            <p className="text-slate-400 text-xs mb-2">
+              ¿Prefieres compartirlo tú directamente? Usa este link:
             </p>
 
             {/* Link box */}
-            <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 mb-4">
+            <div className="bg-slate-900 border border-slate-700 rounded-lg p-3 mb-3">
               <p className="text-slate-300 text-xs font-mono break-all leading-relaxed">
                 {result.inviteLink}
               </p>
@@ -82,7 +91,7 @@ export default function InvitePage() {
             </div>
 
             <div className="bg-amber-950/40 border border-amber-900/50 rounded-lg px-3 py-2.5 text-xs text-amber-300/80 mb-4">
-              ⚠️ El link funciona <strong>una sola vez</strong> y expira en 1 hora. Si tu cliente no lo usa a tiempo, vuelve a generar uno.
+              ⚠️ El link funciona <strong>una sola vez</strong> y expira en 1 hora. Si tu cliente no lo usa a tiempo, vuelve a invitarlo.
             </div>
 
             <button
@@ -137,7 +146,7 @@ export default function InvitePage() {
               disabled={isPending || !email || !fullName}
               className="w-full bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium py-2.5 rounded-lg text-sm transition-colors"
             >
-              {isPending ? "Generando link..." : "Generar invitación 🔗"}
+              {isPending ? "Enviando invitación..." : "Enviar invitación ✉️"}
             </button>
           </form>
         )}
@@ -148,8 +157,8 @@ export default function InvitePage() {
         <h3 className="text-slate-300 text-sm font-semibold mb-3">¿Cómo funciona?</h3>
         <ol className="space-y-2">
           {[
-            "Generas un link único para tu cliente",
-            "Lo compartes por WhatsApp, email o como prefieras",
+            "Le enviamos un email a tu cliente con su link de acceso",
+            "Si prefieres, también puedes compartirlo por WhatsApp",
             "Tu cliente hace clic, entra automáticamente",
             "Completa el formulario de diagnóstico antes de la sesión",
           ].map((step, i) => (
