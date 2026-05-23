@@ -1,13 +1,14 @@
 "use server"
 
-import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
+import { createClient } from "@/lib/supabase/server"
+import { createAdminClient } from "@/lib/supabase/admin"
 
 function slugify(text: string): string {
   return text
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "") // remove accents
+    .replace(/[̀-ͯ]/g, "") // strip accents
     .replace(/[^a-z0-9\s-]/g, "")
     .trim()
     .replace(/\s+/g, "-")
@@ -19,35 +20,43 @@ export async function completeCoachOnboarding(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/auth/login")
 
-  const fullName = formData.get("full_name") as string
-  const orgName = formData.get("org_name") as string
-  const baseSlug = slugify(orgName || fullName)
+  const fullName = (formData.get("full_name") as string)?.trim()
+  const orgName  = (formData.get("org_name") as string)?.trim()
+  if (!fullName || !orgName) {
+    return { error: "Nombre y organización son requeridos." }
+  }
 
-  // Ensure slug uniqueness by appending random suffix if needed
-  let slug = baseSlug
-  const { data: existing } = await supabase
+  // Use the admin client to bypass RLS during the bootstrap
+  // (the user has no organization_id yet, so RLS would block normal access)
+  const admin = createAdminClient()
+
+  // Find a unique slug
+  const base = slugify(orgName) || slugify(fullName) || "coach"
+  let slug = base
+  const { data: existing } = await admin
     .from("organizations")
     .select("id")
     .eq("slug", slug)
     .maybeSingle()
 
   if (existing) {
-    slug = `${baseSlug}-${Math.random().toString(36).slice(2, 6)}`
+    slug = `${base}-${Math.random().toString(36).slice(2, 6)}`
   }
 
-  // Create organization
-  const { data: org, error: orgError } = await supabase
+  // Create organization (admin client → no RLS check)
+  const { data: org, error: orgError } = await admin
     .from("organizations")
-    .insert({ name: orgName || fullName, slug })
+    .insert({ name: orgName, slug })
     .select("id")
     .single()
 
   if (orgError || !org) {
-    return { error: "No se pudo crear la organización. Intenta de nuevo." }
+    console.error("[onboarding] organization insert failed:", orgError)
+    return { error: `No se pudo crear la organización: ${orgError?.message ?? "error desconocido"}` }
   }
 
-  // Update profile: set name, role=coach, org, onboarding_completed
-  const { error: profileError } = await supabase
+  // Update profile: name, role=coach, org_id, onboarding_completed
+  const { error: profileError } = await admin
     .from("profiles")
     .update({
       full_name: fullName,
@@ -58,7 +67,8 @@ export async function completeCoachOnboarding(formData: FormData) {
     .eq("id", user.id)
 
   if (profileError) {
-    return { error: "No se pudo guardar tu perfil. Intenta de nuevo." }
+    console.error("[onboarding] profile update failed:", profileError)
+    return { error: `No se pudo guardar tu perfil: ${profileError.message}` }
   }
 
   redirect("/coach/overview")
