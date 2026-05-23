@@ -1,212 +1,116 @@
 # InteFin — Backlog
 
-> Última actualización: 2026-05-22
+> Última actualización: 2026-05-23
 
 ---
 
 ## ✅ Completado
 
-### Infraestructura
-- [x] Next.js 15 App Router + TypeScript + Tailwind CSS
-- [x] Supabase project creado (`cgeowklrdzhlwhllfopo`)
-- [x] shadcn/ui inicializado (dark theme)
-- [x] Dependencias: `@supabase/ssr`, `next-intl`, `recharts`, `resend`
-- [x] `.env.local` con credenciales Supabase
-- [x] `.gitignore` con `.env*` y `.superpowers/`
+### Fase 1 — MVP Core (todo el flujo end-to-end)
 
-### Base de Datos
-- [x] 9 tablas: `organizations`, `profiles`, `client_profiles`, `client_invitations`, `financial_diagnostics`, `financial_accounts`, `account_snapshots`, `goals`, `coaching_sessions`
-- [x] RLS habilitado en todas las tablas
-- [x] Políticas RLS con `get_my_org_id()` + `get_my_role()`
-- [x] Trigger `on_auth_user_created` → auto-crea perfil en signup
-- [x] Tipos TypeScript generados en `src/lib/supabase/types.ts`
+**Infraestructura**
+- [x] Next.js 15 App Router + TypeScript + Tailwind + shadcn/ui
+- [x] Supabase project (`cgeowklrdzhlwhllfopo`) + 10 tablas + RLS
+- [x] Tipos TypeScript generados
+- [x] Auth middleware (`proxy.ts`) con Edge Runtime safety
 
-### Autenticación
-- [x] `/auth/login` — magic link (sin contraseña)
-- [x] `/auth/callback` — intercambia code, detecta tipo de usuario, redirige por rol
-- [x] Middleware de auth → protege `/app`, `/coach`, `/admin`, `/onboarding`
-- [x] Clientes Supabase: browser (`client.ts`), server (`server.ts`), admin (`admin.ts`)
+**Coach**
+- [x] `/auth/login` — magic link
+- [x] `/auth/callback` — exchange + role-based redirect
+- [x] `/onboarding` — coach crea organización (con admin client para bypass de RLS)
+- [x] `/coach/overview` — stats + clientes recientes
+- [x] `/coach/clients` — lista completa
+- [x] `/coach/clients/[id]` — detalle: perfil + diagnóstico + 4 cuentas
+- [x] `/coach/invite` — invita cliente por email
 
-### Coach
-- [x] `/onboarding` — coach crea organización + perfil (slug auto-generado)
-- [x] `/coach/layout.tsx` — sidebar + auth guard + carga perfil/org server-side
-- [x] `/coach/overview` — stats (total/activos/leads) + quick actions + clientes recientes
-- [x] `/coach/clients` — lista completa con estado, ocupación, fecha
-- [x] `/coach/invite` — formulario email+nombre, envía `inviteUserByEmail` via admin client
-- [x] Server action `inviteClient` — upsert invitation + envío email
+**Cliente**
+- [x] `/onboarding/client` — wizard de diagnóstico (4 secciones)
+- [x] `/app/dashboard` — patrimonio neto + score + 4 cuentas
+- [x] Actualización inline de saldos → crea `account_snapshot`
+- [x] Inversiones bloqueada hasta que Imprevisto + Oxígeno ≥ 50%
 
----
+**Funciones puras**
+- [x] `calculateTargets()` — targets de las 4 cuentas según ingreso
+- [x] `calculateScore()` — health score 0–100 con la fórmula ponderada
 
-## 🔲 Pendiente — Fase 1 MVP
-
-> **Objetivo:** Mabel puede hacer una sesión de diagnóstico completa con un cliente real.
-
-### Cliente — Onboarding / Diagnóstico
-- [x] `/onboarding/client` — wizard de diagnóstico en 4 secciones:
-  - Sección 1: Perfil (nombre, edad, ocupación, dependientes, pareja, salud/pensión)
-  - Sección 2: Situación actual (ingreso, gastos, ahorros, seguro de vida)
-  - Sección 3: Activos y deudas (lista activos con valor, lista deudas con tipo)
-  - Sección 4: Metas (objetivo principal, mayor angustia, horizonte de tiempo)
-- [ ] Server action `saveClientDiagnostic`:
-  - Inserta `financial_diagnostics` (inmutable)
-  - Crea las 4 `financial_accounts` con `target_amount` calculado:
-    - imprevisto = 1 × monthly_income
-    - oxígeno = 6 × monthly_income
-    - retiro = 0 (is_active = has_life_insurance)
-    - inversiones = 0 (desbloqueada después)
-  - Actualiza `client_profiles` con datos del formulario
-  - Marca `profiles.onboarding_completed = true`
-
-### Cliente — Dashboard
-- [ ] `/app/layout.tsx` — auth guard para clientes, carga perfil
-- [ ] `/app/dashboard` — dashboard completo:
-  - Hero: patrimonio neto (total_assets − total_debts) + score + mini-stats
-  - 4 AccountCards: border-left color + barra de progreso + % + target
-  - Inversiones visualmente bloqueada si imprevisto/oxígeno < 50%
-  - Próximo hito (conectado a coaching_sessions)
-- [ ] `src/lib/score/calculateScore.ts` — función pura del health score (0-100)
-- [ ] `src/lib/targets/calculateTargets.ts` — función pura de targets por cuenta
-- [ ] `src/components/dashboard/AccountCard.tsx` — card individual con inline edit
-- [ ] `src/components/dashboard/HeroStats.tsx` — patrimonio neto + 3 mini-stats
-- [ ] `src/components/dashboard/ScoreBadge.tsx` — badge circular 0-100
-- [ ] Actualización de saldo inline: input en cada card → guarda + crea `account_snapshot`
-
-### Coach — Detalle de Cliente
-- [ ] `/coach/clients/[id]` — vista detallada:
-  - 4 cuentas con progreso del cliente
-  - Diagnóstico financiero (resumen del formulario)
-  - Notas privadas del coach
-  - Historial de sesiones
-- [ ] `/coach/clients/[id]/edit` — el coach puede ajustar `target_amount` de cada cuenta
+**Despliegue**
+- [x] GitHub repo: https://github.com/serandmoncas/InteFin
+- [x] Vercel project linked + auto-deploy
+- [x] Producción viva: **https://intefin.vercel.app**
+- [x] Env vars en Vercel (`NEXT_PUBLIC_SUPABASE_URL`, `_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `NEXT_PUBLIC_SITE_URL`)
+- [x] Landing page (`/`) con hero + método + audiencias + CTA
 
 ---
 
-## 🔲 Pendiente — Fase 2 SaaS Core
+## 🔲 Pendiente
 
-### Público
-- [ ] `/` — landing page de InteFin
-- [ ] `/[slug]` — perfil público del coach con CTA
+### 🔥 Próximos pasos críticos (antes de usar con cliente real)
+
+- [ ] **CONFIG-01** Configurar URLs de redirect en Supabase para producción
+  - Dashboard → Auth → URL Configuration → Redirect URLs
+  - Agregar: `https://intefin.vercel.app/auth/callback`
+- [ ] **CONFIG-02** Smoke test completo en producción
+  - Crear cuenta coach → invitar cliente real → completar diagnóstico → ver dashboard
+- [ ] **CONFIG-03** Configurar `NEXT_PUBLIC_SITE_URL` en Vercel con el dominio real (actualmente `http://localhost:3000`)
+
+### Fase 2 — SaaS Core
+
+**Email (Resend)**
+- [ ] Cuenta en Resend + API key + verificar dominio
+- [ ] Reemplazar `inviteUserByEmail` (email genérico de Supabase) por email branded con Resend
+- [ ] Template HTML para invitación + recordatorio mensual
+
+**Coach — Sesiones y notas**
+- [ ] `/coach/clients/[id]/edit` — ajustar `target_amount` de cuentas
+- [ ] Notas privadas del coach por cliente (campo + UI)
+- [ ] `/coach/sessions` — agendar + registrar sesiones con notas + deliverables
+- [ ] `/coach/settings` — logo, color de marca, slug público
+
+**Cliente — Más features**
+- [ ] `/app/goals` — metas con hitos
+- [ ] `/app/sessions` — historial de sesiones con el coach
+- [ ] Gráfica histórica de evolución por cuenta (Recharts)
+
+**Público / Lead gen**
+- [ ] `/[slug]` — perfil público del coach (Mabel comparte por WhatsApp)
 - [ ] `/[slug]/test` — test gratuito de salud financiera (10 preguntas)
-- [ ] `/[slug]/test/result` — score parcial + blur + CTA agendar sesión
+- [ ] `/[slug]/test/result` — score parcial con blur + CTA agendar
 
-### Onboarding Self-Service
-- [ ] Registro de nuevos coaches sin invitación
-- [ ] Plan free: máximo 3 clientes activos
-- [ ] `/coach/settings` — logo, color de marca, configuración de organización
+**Billing**
+- [ ] Stripe integration
+- [ ] Plan Free (3 clientes) vs Pro (~$30 USD/mes, ilimitado)
+- [ ] Onboarding self-service de nuevos coaches
 
-### Sesiones
-- [ ] `/coach/sessions` — lista de sesiones programadas
-- [ ] Crear/editar sesión con notas privadas + resumen para el cliente
-- [ ] `/app/sessions` — cliente ve su historial de sesiones
+**Dominio**
+- [ ] Comprar `intefin.app` y configurar en Vercel
 
-### Progreso Histórico
-- [ ] Snapshots mensuales automáticos (cron job o trigger en update)
-- [ ] Gráfica de línea en `/app/dashboard` con evolución por cuenta (Recharts)
-- [ ] Metas con hitos en `/app/goals`
+### Fase 3 — Plataforma
 
-### Email
-- [ ] Integrar Resend para emails transaccionales
-- [ ] Email de bienvenida al cliente
-- [ ] Recordatorio mensual para actualizar saldos
-
-### Billing
-- [ ] Stripe — suscripción mensual para coaches (~$30 USD/mes)
-- [ ] Plan free (3 clientes) vs Pro (ilimitado)
-
----
-
----
-
-## 🚀 Despliegue
-
-> Tickets de infraestructura para llevar el MVP a producción. Pueden hacerse en paralelo con Fase 1.
-
-### Vercel
-- [ ] **DEPLOY-01** Crear proyecto en Vercel y conectar repositorio GitHub
-  - `vercel link` o desde dashboard.vercel.com → New Project
-- [ ] **DEPLOY-02** Configurar variables de entorno en Vercel (Production + Preview):
-  ```
-  NEXT_PUBLIC_SUPABASE_URL
-  NEXT_PUBLIC_SUPABASE_ANON_KEY
-  SUPABASE_SERVICE_ROLE_KEY
-  NEXT_PUBLIC_SITE_URL=https://<tu-dominio>.vercel.app
-  ```
-- [ ] **DEPLOY-03** Verificar build exitoso en Vercel (preview deployment)
-- [ ] **DEPLOY-04** Configurar dominio personalizado (ej: `intefin.app` o `app.mabelcoach.com`)
-
-### Supabase — Configuración para Producción
-- [ ] **DEPLOY-05** Agregar URL de producción en Supabase Auth → URL Configuration → Redirect URLs:
-  ```
-  https://<dominio-produccion>/auth/callback
-  https://<preview>.vercel.app/auth/callback
-  ```
-- [ ] **DEPLOY-06** Configurar `Site URL` en Supabase Auth Settings con el dominio de producción
-- [ ] **DEPLOY-07** Revisar límites del plan Free de Supabase (500 MB DB, 50k MAU) — subir a Pro si se supera
-
-### Email (Resend)
-- [ ] **DEPLOY-08** Crear cuenta en [resend.com](https://resend.com) y obtener API key
-- [ ] **DEPLOY-09** Agregar `RESEND_API_KEY` a `.env.local` y a Vercel env vars
-- [ ] **DEPLOY-10** Verificar dominio de envío en Resend (para que los emails lleguen desde `hola@intefin.app` en vez de `onboarding@resend.dev`)
-- [ ] **DEPLOY-11** Reemplazar `inviteUserByEmail` (email de Supabase) por email personalizado con Resend + template con branding de InteFin
-
-### GitHub
-- [ ] **DEPLOY-12** Crear repositorio en GitHub y hacer push del branch `main`
-  ```bash
-  git remote add origin https://github.com/<usuario>/intefin.git
-  git push -u origin main
-  ```
-- [ ] **DEPLOY-13** Configurar protección de branch `main` (require PR, no force push)
-
-### Pre-lanzamiento MVP
-- [ ] **DEPLOY-14** Smoke test en producción:
-  - Coach puede registrarse y crear organización
-  - Coach puede invitar cliente
-  - Cliente puede completar diagnóstico
-  - Dashboard del cliente muestra las 4 cuentas
-- [ ] **DEPLOY-15** Configurar Vercel Analytics (gratuito) para monitorear uso
-- [ ] **DEPLOY-16** Probar magic link desde dominio de producción (email llega, link funciona)
-
----
-
-## 🔲 Pendiente — Fase 3 Plataforma
-
-- [ ] Marketplace de coaches en intelfin.app
-- [ ] AI insights financieros (análisis automático del diagnóstico con Claude API)
+- [ ] AI insights financieros (Claude API analiza el diagnóstico)
 - [ ] Exportación de reportes PDF
 - [ ] i18n completo ES + EN con next-intl
 - [ ] PWA / mobile optimization
 - [ ] Super admin panel (`/admin`)
+- [ ] Marketplace de coaches
 
 ---
 
 ## 🔧 Deuda Técnica
 
-- [ ] Regenerar tipos Supabase completos (la tabla `client_invitations` fue añadida manualmente)
-- [ ] Agregar `SUPABASE_SERVICE_ROLE_KEY` y `NEXT_PUBLIC_SITE_URL` al `.env.local`
-- [ ] Configurar URL de callback en Supabase Dashboard: `http://localhost:3000/auth/callback`
-- [ ] Configurar `NEXT_PUBLIC_SITE_URL` en Vercel cuando se depliegue
-- [ ] Añadir `next-intl` middleware y routing (instalado pero no configurado)
+- [ ] Regenerar tipos Supabase (la tabla `client_invitations` fue añadida manualmente al .ts)
 - [ ] Tests unitarios para `calculateScore` y `calculateTargets`
 - [ ] Error boundaries en layouts de coach y cliente
+- [ ] Migrar de Edge proxy a Node proxy si crecen las queries (actualmente solo `getUser()`)
+- [ ] `_drains` de logs en Vercel para observabilidad
 
 ---
 
-## 📌 Próxima Sesión — Por Dónde Empezar
+## 📌 Decisiones tomadas
 
-1. **Agregar al `.env.local`:**
-   ```
-   SUPABASE_SERVICE_ROLE_KEY=eyJ...   ← Supabase Dashboard → Settings → API
-   NEXT_PUBLIC_SITE_URL=http://localhost:3000
-   ```
-
-2. **Configurar en Supabase Dashboard:**
-   - Authentication → URL Configuration → Redirect URLs → agregar `http://localhost:3000/auth/callback`
-
-3. **Primera tarea a implementar:** `/onboarding/client` (diagnóstico del cliente en 4 secciones)
-   - Es el corazón del producto — sin esto Mabel no puede hacer la sesión diagnóstico
-   - Archivos a crear:
-     - `src/app/onboarding/client/page.tsx` — wizard multi-step
-     - `src/actions/diagnostic.ts` — `saveClientDiagnostic` server action
-     - `src/lib/targets/calculateTargets.ts` — pura, testeable
-
-4. **Segunda tarea:** `/app/dashboard` con las 4 cuentas
+| Decisión | Justificación |
+|----------|---------------|
+| Admin client en `/onboarding` y `/onboarding/client` | El usuario aún no tiene `organization_id`, así que RLS bloquea el insert. El admin client se usa solo en bootstrap. |
+| `vercel deploy --prod --yes` directo (NO `--prebuilt`) | `vercel pull` descarga vars encriptadas como string vacío, lo que rompe `NEXT_PUBLIC_*` en runtime. |
+| `proxy.ts` con try/catch y null guard | Si las env vars faltan en Edge Runtime, devuelve 200 en lugar de 500 (evita white-screen). |
+| `financial_diagnostics` inmutable | Permite comparar el "antes" vs "ahora" del cliente con datos reales. |
+| Magic link sin contraseña | Clientes de Mabel no son tech-savvy. Email = único requisito. |
