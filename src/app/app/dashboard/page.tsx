@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { calculateScore } from "@/lib/score/calculateScore"
 import { ScoreBadge } from "@/components/dashboard/ScoreBadge"
 import { AccountCard } from "@/components/dashboard/AccountCard"
+import { EvolutionChart } from "@/components/dashboard/EvolutionChart"
 import type { AccountType } from "@/lib/supabase/types"
 
 const ACCOUNT_ORDER: AccountType[] = ["imprevisto", "oxigeno", "retiro", "inversiones"]
@@ -46,6 +47,13 @@ export default async function DashboardPage() {
     .order("created_at")
 
   if (!clientProfile || !accounts) redirect("/onboarding/client")
+
+  const accountIds = accounts.map((a) => a.id)
+  const { data: snapshots } = await supabase
+    .from("account_snapshots")
+    .select("*")
+    .in("account_id", accountIds.length > 0 ? accountIds : [""])
+    .order("snapshot_month", { ascending: true })
 
   const sortedAccounts = ACCOUNT_ORDER.map(
     (type) => accounts.find((a) => a.account_type === type)
@@ -123,6 +131,14 @@ export default async function DashboardPage() {
             locked={account.account_type === "inversiones" && inversionesLocked}
           />
         ))}
+      </div>
+
+      {/* Evolution chart */}
+      <div className="mb-6">
+        <EvolutionChart
+          accounts={accounts.map((a) => ({ id: a.id, account_type: a.account_type }))}
+          snapshots={snapshots ?? []}
+        />
       </div>
 
       {/* Locked message */}
