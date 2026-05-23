@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { calculateScore } from "@/lib/score/calculateScore"
 import { ScoreBadge } from "@/components/dashboard/ScoreBadge"
 import { SessionsPanel } from "@/components/coach/SessionsPanel"
+import { AccountTargetsEditor } from "@/components/coach/AccountTargetsEditor"
 import type { AccountType } from "@/lib/supabase/types"
 
 const ACCOUNT_ORDER: AccountType[] = ["imprevisto", "oxigeno", "retiro", "inversiones"]
@@ -163,63 +164,15 @@ export default async function ClientDetailPage({
         </div>
       </div>
 
-      {/* 4 Accounts */}
-      <div className="bg-[#0f172a] border border-slate-800 rounded-xl p-5 mb-5">
-        <h2 className="text-slate-100 font-semibold text-sm mb-4">Las 4 Cuentas</h2>
-        {sortedAccounts.length === 0 ? (
+      {/* 4 Accounts — editable by coach */}
+      {sortedAccounts.length === 0 ? (
+        <div className="bg-[#0f172a] border border-slate-800 rounded-xl p-5 mb-5">
+          <h2 className="text-slate-100 font-semibold text-sm mb-2">Las 4 Cuentas</h2>
           <p className="text-slate-500 text-sm">Las cuentas se crean cuando el cliente completa el diagnóstico.</p>
-        ) : (
-          <div className="flex flex-col gap-3">
-            {sortedAccounts.map((account) => {
-              const meta     = ACCOUNT_META[account.account_type]
-              const isRetiro = account.account_type === "retiro"
-              const progress = !isRetiro && account.target_amount > 0
-                ? Math.min(100, (account.current_amount / account.target_amount) * 100)
-                : 0
-
-              return (
-                <div key={account.id} className="flex items-center gap-4">
-                  {/* Label */}
-                  <div className="w-28 shrink-0">
-                    <span className="text-xs font-semibold" style={{ color: meta.color }}>
-                      {meta.emoji} {meta.label}
-                    </span>
-                  </div>
-
-                  {/* Bar or badge */}
-                  {isRetiro ? (
-                    <span
-                      className="text-xs px-2 py-0.5 rounded-full border font-medium"
-                      style={account.is_active
-                        ? { color: meta.color, borderColor: meta.color }
-                        : { color: "#64748b", borderColor: "#334155" }
-                      }
-                    >
-                      {account.is_active ? "✓ Activo" : "Sin seguro"}
-                    </span>
-                  ) : (
-                    <div className="flex-1">
-                      <div className="flex justify-between text-xs mb-1">
-                        <span className="text-slate-300">{formatCOP(account.current_amount)}</span>
-                        <span className="text-slate-500">{formatCOP(account.target_amount)}</span>
-                      </div>
-                      <div className="bg-slate-800 rounded-full h-2 overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all"
-                          style={{ width: `${progress}%`, background: meta.color }}
-                        />
-                      </div>
-                      <p className="text-right text-xs mt-0.5" style={{ color: meta.color }}>
-                        {progress.toFixed(0)}%
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )
-            })}
-          </div>
-        )}
-      </div>
+        </div>
+      ) : (
+        <AccountTargetsEditor accounts={sortedAccounts} />
+      )}
 
       {/* Sessions */}
       <SessionsPanel clientId={id} sessions={sessions ?? []} />
