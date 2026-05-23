@@ -306,7 +306,9 @@ export type Database = {
       }
       organizations: {
         Row: {
+          bio: string | null
           brand_color: string | null
+          contact_email: string | null
           created_at: string
           id: string
           logo_url: string | null
@@ -314,9 +316,13 @@ export type Database = {
           plan: Database["public"]["Enums"]["org_plan"]
           slug: string
           stripe_customer_id: string | null
+          tagline: string | null
+          whatsapp: string | null
         }
         Insert: {
+          bio?: string | null
           brand_color?: string | null
+          contact_email?: string | null
           created_at?: string
           id?: string
           logo_url?: string | null
@@ -324,9 +330,13 @@ export type Database = {
           plan?: Database["public"]["Enums"]["org_plan"]
           slug: string
           stripe_customer_id?: string | null
+          tagline?: string | null
+          whatsapp?: string | null
         }
         Update: {
+          bio?: string | null
           brand_color?: string | null
+          contact_email?: string | null
           created_at?: string
           id?: string
           logo_url?: string | null
@@ -334,6 +344,8 @@ export type Database = {
           plan?: Database["public"]["Enums"]["org_plan"]
           slug?: string
           stripe_customer_id?: string | null
+          tagline?: string | null
+          whatsapp?: string | null
         }
         Relationships: []
       }
