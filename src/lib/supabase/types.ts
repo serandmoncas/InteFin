@@ -350,6 +350,7 @@ export type Database = {
           logo_url: string | null
           name: string
           plan: Database["public"]["Enums"]["org_plan"]
+          plan_expires_at: string | null
           slug: string
           stripe_customer_id: string | null
           tagline: string | null
@@ -364,6 +365,7 @@ export type Database = {
           logo_url?: string | null
           name: string
           plan?: Database["public"]["Enums"]["org_plan"]
+          plan_expires_at?: string | null
           slug: string
           stripe_customer_id?: string | null
           tagline?: string | null
@@ -378,10 +380,56 @@ export type Database = {
           logo_url?: string | null
           name?: string
           plan?: Database["public"]["Enums"]["org_plan"]
+          plan_expires_at?: string | null
           slug?: string
           stripe_customer_id?: string | null
           tagline?: string | null
           whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      subscription_payments: {
+        Row: {
+          id: string
+          organization_id: string
+          initiated_by: string
+          amount_cop: number
+          status: string
+          wompi_reference: string
+          wompi_transaction_id: string | null
+          wompi_payment_method: string | null
+          plan_to_activate: string
+          months: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          organization_id: string
+          initiated_by: string
+          amount_cop: number
+          status?: string
+          wompi_reference: string
+          wompi_transaction_id?: string | null
+          wompi_payment_method?: string | null
+          plan_to_activate?: string
+          months?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          organization_id?: string
+          initiated_by?: string
+          amount_cop?: number
+          status?: string
+          wompi_reference?: string
+          wompi_transaction_id?: string | null
+          wompi_payment_method?: string | null
+          plan_to_activate?: string
+          months?: number
+          created_at?: string
+          updated_at?: string
         }
         Relationships: []
       }

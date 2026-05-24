@@ -2,9 +2,15 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { SettingsForm } from "@/components/coach/SettingsForm"
+import { UpgradeButton } from "@/components/coach/UpgradeButton"
 import { PLANS, PLAN_LABELS, formatCOP } from "@/lib/plan/limits"
 
-export default async function CoachSettingsPage() {
+export default async function CoachSettingsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ payment?: string }>
+}) {
+  const { payment: paymentRef } = await searchParams
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect("/auth/login")
@@ -51,6 +57,22 @@ export default async function CoachSettingsPage() {
         </p>
       </div>
 
+      {/* Post-checkout banner */}
+      {paymentRef && (
+        <div className="bg-indigo-950/40 border border-indigo-700 rounded-xl p-4 mb-6 flex items-start gap-3">
+          <span className="text-2xl">⏳</span>
+          <div className="flex-1">
+            <p className="text-indigo-200 text-sm font-semibold">Procesando tu pago</p>
+            <p className="text-indigo-300/80 text-xs mt-0.5">
+              Wompi nos confirmará en unos segundos. Si tu plan no se actualiza
+              en 2 minutos, recarga esta página.
+              {" "}
+              <span className="font-mono text-indigo-400/60">{paymentRef}</span>
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Plan card */}
       <div className={`rounded-xl p-5 mb-6 border ${isPro
         ? "bg-gradient-to-br from-indigo-950 to-[#0f172a] border-indigo-500/40"
@@ -71,14 +93,7 @@ export default async function CoachSettingsPage() {
                 : "Gratis"}
             </p>
           </div>
-          {!isPro && (
-            <Link
-              href="/pricing"
-              className="bg-indigo-600 hover:bg-indigo-500 transition-colors text-white text-sm font-medium px-4 py-2 rounded-lg whitespace-nowrap"
-            >
-              Mejorar a Pro →
-            </Link>
-          )}
+          {!isPro && <UpgradeButton />}
         </div>
 
         {/* Usage bar for Free */}
