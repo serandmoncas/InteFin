@@ -12,6 +12,42 @@ export type Database = {
   }
   public: {
     Tables: {
+      public_test_results: {
+        Row: {
+          id: string
+          organization_id: string
+          score: number
+          answers: Json
+          visitor_name: string | null
+          visitor_email: string | null
+          visitor_whatsapp: string | null
+          contacted: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          organization_id: string
+          score: number
+          answers?: Json
+          visitor_name?: string | null
+          visitor_email?: string | null
+          visitor_whatsapp?: string | null
+          contacted?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          organization_id?: string
+          score?: number
+          answers?: Json
+          visitor_name?: string | null
+          visitor_email?: string | null
+          visitor_whatsapp?: string | null
+          contacted?: boolean
+          created_at?: string
+        }
+        Relationships: []
+      }
       client_invitations: {
         Row: {
           id: string

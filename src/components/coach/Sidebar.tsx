@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation"
 const NAV = [
   { href: "/coach/overview",  label: "Resumen",   icon: "🏠" },
   { href: "/coach/clients",   label: "Clientes",  icon: "👥" },
-  { href: "/coach/sessions",  label: "Sesiones",  icon: "📋" },
+  { href: "/coach/leads",     label: "Leads",     icon: "🎯" },
   { href: "/coach/invite",    label: "Invitar",   icon: "✉️" },
   { href: "/coach/settings",  label: "Ajustes",   icon: "⚙️" },
 ]

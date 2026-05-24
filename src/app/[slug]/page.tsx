@@ -123,7 +123,16 @@ export default async function PublicCoachPage({ params }: PageProps) {
             <p className="text-lg text-slate-400 mb-2">Coach financiero</p>
           )}
 
-          <p className="text-slate-500 text-sm">{org.name}</p>
+          <p className="text-slate-500 text-sm mb-6">{org.name}</p>
+
+          {/* Free test CTA — primary action */}
+          <Link
+            href={`/${slug}/test`}
+            className="inline-flex items-center gap-2 text-white font-medium px-6 py-3 rounded-xl transition-opacity hover:opacity-90 text-sm"
+            style={{ background: accent }}
+          >
+            📊 Hacer mi test gratuito (3 min)
+          </Link>
         </div>
       </section>
 
