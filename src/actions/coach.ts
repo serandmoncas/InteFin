@@ -38,7 +38,7 @@ export async function inviteClient(formData: FormData): Promise<InviteResult> {
   // ── Plan limit enforcement ────────────────────────────────
   const { data: org } = await supabase
     .from("organizations")
-    .select("plan")
+    .select("plan, plan_expires_at")
     .eq("id", orgId)
     .single()
 
@@ -48,7 +48,9 @@ export async function inviteClient(formData: FormData): Promise<InviteResult> {
     .eq("organization_id", orgId)
     .in("status", ["lead", "active"])
 
-  const currentPlan = org?.plan ?? "free"
+  // Use effective plan (Pro reverts to Free if expired)
+  const { effectivePlan } = await import("@/lib/plan/expiration")
+  const currentPlan = effectivePlan(org?.plan ?? "free", org?.plan_expires_at ?? null)
   const current     = activeClientsCount ?? 0
   const limit       = PLANS[currentPlan].maxActiveClients
 

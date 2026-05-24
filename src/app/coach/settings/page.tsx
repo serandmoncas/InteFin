@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server"
 import { SettingsForm } from "@/components/coach/SettingsForm"
 import { UpgradeButton } from "@/components/coach/UpgradeButton"
 import { PLANS, PLAN_LABELS, formatCOP } from "@/lib/plan/limits"
+import { effectivePlan } from "@/lib/plan/expiration"
 
 export default async function CoachSettingsPage({
   searchParams,
@@ -25,7 +26,7 @@ export default async function CoachSettingsPage({
 
   const { data: org } = await supabase
     .from("organizations")
-    .select("name, slug, tagline, bio, contact_email, whatsapp, brand_color, plan")
+    .select("name, slug, tagline, bio, contact_email, whatsapp, brand_color, plan, plan_expires_at")
     .eq("id", profile.organization_id)
     .single()
 
@@ -40,9 +41,12 @@ export default async function CoachSettingsPage({
   const siteOrigin = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intefin.vercel.app"
   const publicUrl  = `${siteOrigin}/${org.slug}`
 
-  const plan         = org.plan ?? "free"
+  const plan         = effectivePlan(org.plan ?? "free", org.plan_expires_at)
   const planLimits   = PLANS[plan]
   const isPro        = plan === "pro" || plan === "enterprise"
+  const expiresAt    = org.plan_expires_at && plan === "pro"
+    ? new Date(org.plan_expires_at).toLocaleDateString("es-CO", { day: "numeric", month: "long", year: "numeric" })
+    : null
   const current      = activeClientsCount ?? 0
   const limit        = planLimits.maxActiveClients
   const usagePct     = isPro ? 0 : Math.min(100, (current / limit) * 100)
@@ -92,6 +96,11 @@ export default async function CoachSettingsPage({
                 ? `${formatCOP(planLimits.monthlyPriceCOP)}/mes`
                 : "Gratis"}
             </p>
+            {expiresAt && (
+              <p className="text-indigo-300/70 text-xs mt-1">
+                Renueva el {expiresAt}
+              </p>
+            )}
           </div>
           {!isPro && <UpgradeButton />}
         </div>
