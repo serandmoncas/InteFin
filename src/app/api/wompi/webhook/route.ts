@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { verifyEventSignature, type WompiEvent } from "@/lib/wompi/webhook"
 import { extendExpiration } from "@/lib/plan/expiration"
+import { sendPlanUpgradeEmail } from "@/lib/email"
 
 /**
  * Wompi posts transaction events here. We:
@@ -109,6 +110,29 @@ export async function POST(request: NextRequest) {
     }
 
     console.log("[wompi webhook] activated pro for org", payment.organization_id, "until", newExpiration.toISOString())
+
+    // Get coach email to send confirmation — fire-and-forget
+    const { data: coachProfile } = await admin
+      .from("profiles")
+      .select("id, full_name")
+      .eq("organization_id", payment.organization_id)
+      .eq("role", "coach")
+      .maybeSingle()
+
+    if (coachProfile) {
+      const { data: authData } = await admin.auth.admin.getUserById(coachProfile.id)
+      const coachEmail = authData?.user?.email
+
+      if (coachEmail) {
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intefin.vercel.app"
+        void sendPlanUpgradeEmail({
+          coachEmail,
+          coachName:     coachProfile.full_name ?? "Coach",
+          planExpiresAt: newExpiration.toISOString(),
+          siteUrl,
+        }).catch((err: unknown) => console.error("[email] plan upgrade failed:", err))
+      }
+    }
   }
 
   return NextResponse.json({ ok: true })

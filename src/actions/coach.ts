@@ -3,6 +3,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { createAdminClient } from "@/lib/supabase/admin"
 import { PLANS, hasClientCapacity, PLAN_LABELS } from "@/lib/plan/limits"
+import { sendClientInviteEmail } from "@/lib/email"
 
 export interface InviteResult {
   success?: boolean
@@ -26,7 +27,7 @@ export async function inviteClient(formData: FormData): Promise<InviteResult> {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("organization_id")
+    .select("organization_id, full_name")
     .eq("id", user.id)
     .single()
 
@@ -38,7 +39,7 @@ export async function inviteClient(formData: FormData): Promise<InviteResult> {
   // ── Plan limit enforcement ────────────────────────────────
   const { data: org } = await supabase
     .from("organizations")
-    .select("plan, plan_expires_at")
+    .select("plan, plan_expires_at, name")
     .eq("id", orgId)
     .single()
 
@@ -105,6 +106,15 @@ export async function inviteClient(formData: FormData): Promise<InviteResult> {
   if (linkError || !linkData?.properties?.action_link) {
     return { error: `No se pudo generar el link: ${linkError?.message ?? "error desconocido"}` }
   }
+
+  // Fire-and-forget — no bloquea la respuesta al coach
+  void sendClientInviteEmail({
+    clientEmail: email,
+    clientName:  fullName,
+    coachName:   profile.full_name ?? "Tu coach",
+    orgName:     org?.name ?? "InteFin",
+    inviteLink:  linkData.properties.action_link,
+  }).catch((err: unknown) => console.error("[email] invite failed:", err))
 
   return {
     success:    true,

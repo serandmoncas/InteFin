@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { createAdminClient } from "@/lib/supabase/admin"
+import { sendCoachWelcomeEmail } from "@/lib/email"
 
 function slugify(text: string): string {
   return text
@@ -70,6 +71,15 @@ export async function completeCoachOnboarding(formData: FormData) {
     console.error("[onboarding] profile update failed:", profileError)
     return { error: `No se pudo guardar tu perfil: ${profileError.message}` }
   }
+
+  // Fire-and-forget — redirect() throws internally in Next.js, so we don't await
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intefin.vercel.app"
+  void sendCoachWelcomeEmail({
+    coachEmail: user.email!,
+    coachName:  fullName,
+    orgName,
+    siteUrl,
+  }).catch((err: unknown) => console.error("[email] welcome failed:", err))
 
   redirect("/coach/overview")
 }
