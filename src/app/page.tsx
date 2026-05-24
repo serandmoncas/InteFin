@@ -14,6 +14,12 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <Link
+              href="/pricing"
+              className="text-slate-400 hover:text-slate-100 text-sm transition-colors px-3 py-1.5 hidden sm:inline"
+            >
+              Precios
+            </Link>
+            <Link
               href="/auth/login"
               className="text-slate-400 hover:text-slate-100 text-sm transition-colors px-3 py-1.5"
             >

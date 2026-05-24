@@ -2,12 +2,14 @@
 
 import { createClient } from "@/lib/supabase/server"
 import { createAdminClient } from "@/lib/supabase/admin"
+import { PLANS, hasClientCapacity, PLAN_LABELS } from "@/lib/plan/limits"
 
 export interface InviteResult {
   success?: boolean
   email?: string
   inviteLink?: string  // shareable URL for the coach to send via WhatsApp/etc
   error?: string
+  planLimitReached?: boolean
 }
 
 export async function inviteClient(formData: FormData): Promise<InviteResult> {
@@ -32,6 +34,30 @@ export async function inviteClient(formData: FormData): Promise<InviteResult> {
 
   const orgId   = profile.organization_id
   const coachId = user.id
+
+  // ── Plan limit enforcement ────────────────────────────────
+  const { data: org } = await supabase
+    .from("organizations")
+    .select("plan")
+    .eq("id", orgId)
+    .single()
+
+  const { count: activeClientsCount } = await supabase
+    .from("client_profiles")
+    .select("id", { count: "exact", head: true })
+    .eq("organization_id", orgId)
+    .in("status", ["lead", "active"])
+
+  const currentPlan = org?.plan ?? "free"
+  const current     = activeClientsCount ?? 0
+  const limit       = PLANS[currentPlan].maxActiveClients
+
+  if (!hasClientCapacity(currentPlan, current)) {
+    return {
+      error: `Alcanzaste el límite de ${limit} clientes del plan ${PLAN_LABELS[currentPlan]}. Actualiza a Pro para invitar clientes ilimitados.`,
+      planLimitReached: true,
+    }
+  }
 
   // Save / refresh invitation record
   const { error: inviteRecordError } = await supabase
