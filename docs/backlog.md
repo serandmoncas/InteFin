@@ -88,13 +88,8 @@
 
 ### UX / Pulido
 
-- [ ] **UX-01** Traducir mensajes de error del login al español
-  - `"Error sending magic link email"` → `"No pudimos enviar el link. Intenta de nuevo."`
-  - Archivo: `src/app/auth/login/page.tsx`
-
-- [ ] **UX-02** Estado de éxito tras enviar magic link
-  - Mostrar `"✓ Revisa tu email"` en lugar de quedarse estático
-  - Deshabilitar botón mientras se envía (loading state)
+- [x] **UX-01** Traducir mensajes de error del login al español *(2026-05-25)*
+- [x] **UX-02** Estado de éxito tras enviar magic link *(ya estaba implementado)*
 
 - [ ] **UX-03** Página 404 y error boundaries globales
   - `src/app/not-found.tsx` con diseño dark theme
@@ -104,11 +99,11 @@
 
 - [ ] **COACH-01** `/coach/clients/[id]/edit` — ajustar target de Inversiones
 - [ ] **COACH-02** Notas privadas por cliente (textarea + guardar en sesión)
-- [ ] **COACH-03** `/coach/sessions` — registro + historial de sesiones
+- [x] **COACH-03** `/coach/sessions` — registro + historial de sesiones *(2026-05-25)*
 
 ### Cliente — Features pendientes
 
-- [ ] **CLIENT-01** Gráfica histórica de evolución por cuenta (Recharts + `account_snapshots`)
+- [x] **CLIENT-01** Gráfica histórica de evolución por cuenta (Recharts + `account_snapshots`) *(2026-05-25)*
 - [ ] **CLIENT-02** `/app/goals` — metas financieras con hitos (tabla `goals` ya existe)
 - [ ] **CLIENT-03** `/app/sessions` — historial de sesiones visible al cliente
 
