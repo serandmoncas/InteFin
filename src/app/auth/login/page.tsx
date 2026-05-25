@@ -38,7 +38,7 @@ export default function LoginPage() {
           <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 mb-4">
             <span className="text-white font-bold text-lg">IF</span>
           </div>
-          <h1 className="text-2xl font-bold text-slate-100">InteFin</h1>
+          <h1 className="text-2xl font-bold text-slate-100">InteliFin</h1>
           <p className="text-slate-400 text-sm mt-1">Inteligencia Financiera</p>
         </div>
 

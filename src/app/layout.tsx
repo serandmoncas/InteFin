@@ -14,19 +14,19 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "InteFin — Inteligencia Financiera para coaches y sus clientes",
-    template: "%s · InteFin",
+    default: "InteliFin — Inteligencia Financiera para coaches y sus clientes",
+    template: "%s · InteliFin",
   },
   description:
     "Plataforma para coaches financieros. Diagnósticos, dashboards y seguimiento mensual del método de las 4 cuentas — sin Excel sueltos.",
-  metadataBase: new URL("https://intefin.vercel.app"),
+  metadataBase: new URL("https://intelifin.online"),
   openGraph: {
-    title: "InteFin — Inteligencia Financiera",
+    title: "InteliFin — Inteligencia Financiera",
     description:
       "Convierte tus Excel financieros en una experiencia que tus clientes aman.",
     type: "website",
     locale: "es_CO",
-    siteName: "InteFin",
+    siteName: "InteliFin",
   },
 };
 

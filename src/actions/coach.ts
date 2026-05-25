@@ -112,7 +112,7 @@ export async function inviteClient(formData: FormData): Promise<InviteResult> {
     clientEmail: email,
     clientName:  fullName,
     coachName:   profile.full_name ?? "Tu coach",
-    orgName:     org?.name ?? "InteFin",
+    orgName:     org?.name ?? "InteliFin",
     inviteLink:  linkData.properties.action_link,
   }).catch((err: unknown) => console.error("[email] invite failed:", err))
 

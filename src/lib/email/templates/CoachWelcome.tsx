@@ -136,12 +136,12 @@ export function CoachWelcome({ coachName, orgName, siteUrl }: CoachWelcomeProps)
         <Container style={styles.container}>
           {/* Logo */}
           <div style={styles.badge}>IF</div>
-          <Text style={styles.brandName}>InteFin</Text>
+          <Text style={styles.brandName}>InteliFin</Text>
 
           {/* Card */}
           <Section style={styles.surface}>
             <Heading style={styles.heading}>
-              ¡Bienvenido a InteFin, {coachName}!
+              ¡Bienvenido a InteliFin, {coachName}!
             </Heading>
             <Text style={styles.subheading}>
               Tu práctica <strong>{orgName}</strong> ya está lista.
@@ -174,7 +174,7 @@ export function CoachWelcome({ coachName, orgName, siteUrl }: CoachWelcomeProps)
           </Section>
 
           <Text style={styles.footer}>
-            InteFin · Inteligencia Financiera para coaches
+            InteliFin · Inteligencia Financiera para coaches
           </Text>
         </Container>
       </Body>

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**InteFin** (Inteligencia Financiera) — SaaS multi-tenant para coaches financieros.
+**InteliFin** (Inteligencia Financiera) — SaaS multi-tenant para coaches financieros.
 MVP centrado en la práctica de Mabel Álvarez; arquitectura lista para escalar a múltiples coaches.
 
 **Design spec:** `docs/superpowers/specs/2026-05-22-intefin-design.md`
@@ -52,7 +52,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 # Email (Resend) — server-only, never NEXT_PUBLIC_
 RESEND_API_KEY=re_...                   # resend.com/api-keys
-EMAIL_FROM=InteFin <hola@intefin.app>  # sender must match a verified Resend domain
+EMAIL_FROM=InteliFin <hola@intelifin.online>  # sender must match a verified Resend domain
 
 # Billing (Wompi — Colombia)
 WOMPI_PUBLIC_KEY=pub_...
@@ -180,10 +180,10 @@ score = (
 
 ## Email — Resend + React Email
 
-- `src/lib/email/` — módulo completo con 3 templates en español, paleta dark de InteFin
+- `src/lib/email/` — módulo completo con 3 templates en español, paleta dark de InteliFin
 - `sendEmail()` es fire-and-forget: nunca lanza, loggea en consola si no hay `RESEND_API_KEY`
 - Disparado desde: `inviteClient()`, `completeCoachOnboarding()`, webhook Wompi
-- **Pendiente:** dominio `intefin.app` debe estar verificado en Resend para que el SMTP funcione
+- **Pendiente:** dominio `intelifin.online` debe estar verificado en Resend para que el SMTP funcione
 - Mientras tanto: deshabilitar Custom SMTP en Supabase Dashboard y usar el relay por defecto
 
 ## Plan System

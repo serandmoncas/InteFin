@@ -32,7 +32,7 @@ export default function InvitePage() {
   function shareWhatsApp() {
     if (!result?.inviteLink) return
     const text = encodeURIComponent(
-      `¡Hola! Te invité a InteFin para hacer tu diagnóstico financiero. Entra aquí: ${result.inviteLink}`
+      `¡Hola! Te invité a InteliFin para hacer tu diagnóstico financiero. Entra aquí: ${result.inviteLink}`
     )
     window.open(`https://wa.me/?text=${text}`, "_blank")
   }

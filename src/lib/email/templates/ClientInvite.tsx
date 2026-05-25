@@ -110,12 +110,12 @@ export function ClientInvite({
         <Container style={styles.container}>
           {/* Logo */}
           <div style={styles.badge}>IF</div>
-          <Text style={styles.brandName}>InteFin</Text>
+          <Text style={styles.brandName}>InteliFin</Text>
 
           {/* Card */}
           <Section style={styles.surface}>
             <Heading style={styles.heading}>
-              Tu coach te invitó a InteFin
+              Tu coach te invitó a InteliFin
             </Heading>
 
             <Text style={styles.text}>
@@ -124,7 +124,7 @@ export function ClientInvite({
 
             <Text style={styles.text}>
               <span style={styles.coachHighlight}>{coachName}</span> te invitó a
-              completar tu diagnóstico financiero en InteFin — la plataforma para
+              completar tu diagnóstico financiero en InteliFin — la plataforma para
               coaches financieros y sus clientes.
             </Text>
 
@@ -147,7 +147,7 @@ export function ClientInvite({
             </Text>
           </Section>
 
-          <Text style={styles.footer}>{orgName} · Powered by InteFin</Text>
+          <Text style={styles.footer}>{orgName} · Powered by InteliFin</Text>
         </Container>
       </Body>
     </Html>

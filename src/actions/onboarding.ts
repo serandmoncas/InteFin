@@ -73,7 +73,7 @@ export async function completeCoachOnboarding(formData: FormData) {
   }
 
   // Fire-and-forget — redirect() throws internally in Next.js, so we don't await
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intefin.vercel.app"
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intelifin.online"
   void sendCoachWelcomeEmail({
     coachEmail: user.email!,
     coachName:  fullName,

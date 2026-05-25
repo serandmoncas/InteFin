@@ -38,7 +38,7 @@ export default async function CoachSettingsPage({
     .eq("organization_id", profile.organization_id)
     .in("status", ["lead", "active"])
 
-  const siteOrigin = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intefin.vercel.app"
+  const siteOrigin = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intelifin.online"
   const publicUrl  = `${siteOrigin}/${org.slug}`
 
   const plan         = effectivePlan(org.plan ?? "free", org.plan_expires_at)

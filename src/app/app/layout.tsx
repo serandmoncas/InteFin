@@ -27,7 +27,7 @@ export default async function ClientAppLayout({ children }: { children: React.Re
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
             IF
           </div>
-          <span className="text-slate-100 font-semibold text-sm">InteFin</span>
+          <span className="text-slate-100 font-semibold text-sm">InteliFin</span>
         </div>
         <nav className="hidden sm:flex items-center gap-6">
           {[

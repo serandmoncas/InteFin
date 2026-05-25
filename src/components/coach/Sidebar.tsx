@@ -38,7 +38,7 @@ export function Sidebar({ coachName, orgName, orgSlug }: SidebarProps) {
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
             IF
           </div>
-          <span className="text-slate-100 font-semibold text-sm truncate">InteFin</span>
+          <span className="text-slate-100 font-semibold text-sm truncate">InteliFin</span>
         </div>
         <div className="bg-slate-800 rounded-lg px-3 py-2">
           <p className="text-slate-300 text-xs font-medium truncate">{orgName}</p>

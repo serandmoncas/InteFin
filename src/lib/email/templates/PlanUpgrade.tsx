@@ -132,7 +132,7 @@ export function PlanUpgrade({ coachName, planExpiresAt, siteUrl }: PlanUpgradePr
         <Container style={styles.container}>
           {/* Logo */}
           <div style={styles.badge}>IF</div>
-          <Text style={styles.brandName}>InteFin</Text>
+          <Text style={styles.brandName}>InteliFin</Text>
 
           {/* Card */}
           <Section style={styles.surface}>
@@ -172,7 +172,7 @@ export function PlanUpgrade({ coachName, planExpiresAt, siteUrl }: PlanUpgradePr
           </Section>
 
           <Text style={styles.footer}>
-            InteFin · Inteligencia Financiera para coaches
+            InteliFin · Inteligencia Financiera para coaches
           </Text>
         </Container>
       </Body>

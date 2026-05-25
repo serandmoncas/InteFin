@@ -13,7 +13,7 @@ function makeEvent(
     data: {
       transaction: {
         id: "01-9999999999-12345",
-        reference: "intefin_abc12345_1748000000000",
+        reference: "intelifin_abc12345_1748000000000",
         status: "APPROVED",
         amount_in_cents: 5_000_000,
         currency: "COP",

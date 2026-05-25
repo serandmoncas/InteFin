@@ -67,7 +67,7 @@ export default async function PublicQuizPage({ params }: PageProps) {
             <div className="w-5 h-5 rounded-md bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-[9px] font-bold">
               IF
             </div>
-            InteFin
+            InteliFin
           </Link>
         </div>
       </nav>

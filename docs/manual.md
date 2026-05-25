@@ -1,7 +1,7 @@
-# InteFin — Manual de Uso
+# InteliFin — Manual de Uso
 
 > Guía paso a paso de todas las funcionalidades de la plataforma.
-> URL: **https://intefin.vercel.app**
+> URL: **https://intelifin.online**
 
 ---
 
@@ -39,9 +39,9 @@
 
 ### 1. Crear tu cuenta
 
-1. Entra a **https://intefin.vercel.app/auth/login**
+1. Entra a **https://intelifin.online/auth/login**
 2. Escribe tu correo electrónico → click **"Enviar link de acceso"**
-3. Revisa tu bandeja de entrada — te llegó un correo de **InteFin** con un link
+3. Revisa tu bandeja de entrada — te llegó un correo de **InteliFin** con un link
 4. Haz click en el link → entras automáticamente sin necesidad de contraseña
 
 > **Magic link:** No usamos contraseñas. Cada vez que quieras entrar, te enviamos un link de acceso por correo.
@@ -77,7 +77,7 @@ Aquí puedes editar:
 
 Click **Guardar cambios** cuando termines.
 
-Verás tu **link público** arriba (ej: `https://intefin.vercel.app/mabel-alvarez`). Click en **"Ver →"** para previsualizar cómo lo ven tus clientes.
+Verás tu **link público** arriba (ej: `https://intelifin.online/mabel-alvarez`). Click en **"Ver →"** para previsualizar cómo lo ven tus clientes.
 
 ---
 
@@ -190,7 +190,7 @@ Para ver el detalle de una sesión anterior, click en su fila para expandirla.
 
 ### 11. Compartir tu link público
 
-Tu URL pública es: `https://intefin.vercel.app/<tu-slug>` (ej: `mabel-alvarez`).
+Tu URL pública es: `https://intelifin.online/<tu-slug>` (ej: `mabel-alvarez`).
 
 Encuéntrala en **Ajustes** o cópiala manualmente.
 
@@ -241,7 +241,7 @@ Verás 2 secciones:
 Tu coach te invita por dos vías:
 
 **A. Por email automático:**
-- Te llega un correo de **InteFin** con un link de acceso
+- Te llega un correo de **InteliFin** con un link de acceso
 - Click en el link → te lleva directamente al portal
 
 **B. Por WhatsApp (link directo):**
@@ -358,7 +358,7 @@ Verás cada sesión con:
 
 ### 1. Hacer el test gratuito de salud financiera
 
-1. Entra al link público del coach (ej: `https://intefin.vercel.app/mabel-alvarez`)
+1. Entra al link público del coach (ej: `https://intelifin.online/mabel-alvarez`)
 2. Click en **"📊 Hacer mi test gratuito (3 min)"**
 3. Lee la intro → click **"Empezar el test →"**
 4. Responde 10 preguntas (una a la vez, barra de progreso arriba)
@@ -432,12 +432,12 @@ Cada vez que tu coach o tú completan un diagnóstico, se guarda un **snapshot i
 |-----|--------|
 | **Coach** | Su organización: clientes, sesiones, leads, ajustes |
 | **Cliente** | Solo su propio dashboard, metas, sesiones |
-| **Super Admin** | Toda la plataforma (gestión interna de InteFin) |
+| **Super Admin** | Toda la plataforma (gestión interna de InteliFin) |
 | **Público** | Landing + perfiles públicos + tests gratuitos |
 
 ### Aislamiento de datos (multi-tenant)
 
-InteFin es una plataforma para múltiples coaches. **Tus datos están aislados** — ningún otro coach puede ver tus clientes, ni un cliente de otro coach puede ver los tuyos. Esto está garantizado a nivel de base de datos con Row-Level Security (RLS).
+InteliFin es una plataforma para múltiples coaches. **Tus datos están aislados** — ningún otro coach puede ver tus clientes, ni un cliente de otro coach puede ver los tuyos. Esto está garantizado a nivel de base de datos con Row-Level Security (RLS).
 
 ---
 
@@ -474,12 +474,12 @@ Verifica que tu organización tenga todos los campos llenos en **/coach/settings
 
 | Acción | URL |
 |--------|-----|
-| Landing pública | `https://intefin.vercel.app/` |
-| Login | `https://intefin.vercel.app/auth/login` |
-| Tu perfil público | `https://intefin.vercel.app/<tu-slug>` |
-| Test gratuito (para visitantes) | `https://intefin.vercel.app/<tu-slug>/test` |
-| Panel del coach | `https://intefin.vercel.app/coach/overview` |
-| Dashboard del cliente | `https://intefin.vercel.app/app/dashboard` |
+| Landing pública | `https://intelifin.online/` |
+| Login | `https://intelifin.online/auth/login` |
+| Tu perfil público | `https://intelifin.online/<tu-slug>` |
+| Test gratuito (para visitantes) | `https://intelifin.online/<tu-slug>/test` |
+| Panel del coach | `https://intelifin.online/coach/overview` |
+| Dashboard del cliente | `https://intelifin.online/app/dashboard` |
 
 ---
 

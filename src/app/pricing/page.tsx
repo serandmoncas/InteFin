@@ -2,7 +2,7 @@ import Link from "next/link"
 import { PLANS, formatCOP } from "@/lib/plan/limits"
 
 export const metadata = {
-  title: "Precios — InteFin",
+  title: "Precios — InteliFin",
   description: "Empieza gratis. Crece sin límites con el plan Pro.",
 }
 
@@ -16,7 +16,7 @@ export default function PricingPage() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
               IF
             </div>
-            <span className="font-semibold text-sm">InteFin</span>
+            <span className="font-semibold text-sm">InteliFin</span>
           </Link>
           <Link
             href="/auth/login"
@@ -107,7 +107,7 @@ export default function PricingPage() {
             </ul>
 
             <a
-              href="https://wa.me/?text=Hola%2C%20quiero%20activar%20el%20plan%20Pro%20de%20InteFin"
+              href="https://wa.me/?text=Hola%2C%20quiero%20activar%20el%20plan%20Pro%20de%20InteliFin"
               target="_blank"
               rel="noopener noreferrer"
               className="block text-center bg-indigo-600 hover:bg-indigo-500 transition-colors text-white font-medium py-3 rounded-xl text-sm"
@@ -127,7 +127,7 @@ export default function PricingPage() {
             Plan Enterprise con múltiples coaches y branding personalizado.
           </p>
           <a
-            href="mailto:hola@intefin.app?subject=Plan%20Enterprise"
+            href="mailto:hola@intelifin.online?subject=Plan%20Enterprise"
             className="text-indigo-400 hover:text-indigo-300 text-sm font-medium transition-colors"
           >
             Contáctanos →
@@ -172,7 +172,7 @@ export default function PricingPage() {
       <footer className="border-t border-slate-800/50 py-8 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <p className="text-slate-600 text-xs">
-            © 2026 · InteFin — Inteligencia Financiera
+            © 2026 · InteliFin — Inteligencia Financiera
           </p>
         </div>
       </footer>

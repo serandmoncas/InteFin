@@ -12,7 +12,7 @@ export interface SendEmailParams {
  * Fire-and-forget email wrapper.
  * - Never throws: catches all errors and returns { error? }.
  * - If RESEND_API_KEY is not set, logs to console (dev mode).
- * - Uses EMAIL_FROM env var as sender, falls back to hola@intefin.app.
+ * - Uses EMAIL_FROM env var as sender, falls back to hola@intelifin.online.
  */
 export async function sendEmail(
   params: SendEmailParams
@@ -26,7 +26,7 @@ export async function sendEmail(
 
   try {
     const client = getResendClient()
-    const from = process.env.EMAIL_FROM ?? "InteFin <hola@intefin.app>"
+    const from = process.env.EMAIL_FROM ?? "InteliFin <hola@intelifin.online>"
 
     const { error } = await client.emails.send({
       from,

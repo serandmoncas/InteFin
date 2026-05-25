@@ -67,7 +67,7 @@ export default async function PublicCoachPage({ params }: PageProps) {
   // WhatsApp deeplink (strip non-digits)
   const whatsappNumber = org.whatsapp?.replace(/\D/g, "")
   const waMessage = encodeURIComponent(
-    `Hola ${coachName.split(" ")[0]}, vi tu perfil en InteFin y quiero agendar una sesión de diagnóstico financiero.`
+    `Hola ${coachName.split(" ")[0]}, vi tu perfil en InteliFin y quiero agendar una sesión de diagnóstico financiero.`
   )
 
   return (
@@ -79,7 +79,7 @@ export default async function PublicCoachPage({ params }: PageProps) {
             <div className="w-6 h-6 rounded-md bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-[10px] font-bold">
               IF
             </div>
-            InteFin
+            InteliFin
           </Link>
           <Link
             href="/auth/login"
@@ -236,7 +236,7 @@ export default async function PublicCoachPage({ params }: PageProps) {
           <p className="text-slate-600 text-xs">
             Página creada con{" "}
             <Link href="/" className="text-slate-400 hover:text-slate-200 transition-colors">
-              InteFin
+              InteliFin
             </Link>
             {" "}· Inteligencia Financiera
           </p>

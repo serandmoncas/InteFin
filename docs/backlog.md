@@ -1,4 +1,4 @@
-# InteFin — Backlog
+# InteliFin — Backlog
 
 > Última actualización: 2026-05-25
 
@@ -42,7 +42,7 @@
 
 **Despliegue**
 - [x] Vercel project + auto-deploy
-- [x] Producción: **https://intefin.vercel.app**
+- [x] Producción: **https://intelifin.online**
 - [x] Landing page (`/`) con hero + método + audiencias + CTA
 - [x] Página de precios (`/pricing`) con Free + Pro + FAQ
 
@@ -67,14 +67,14 @@
 
 ## 🚨 Bloqueante — resolver antes de usar con clientes reales
 
-- [ ] **DOMAIN-01** Registrar dominio `intefin.app`
+- [ ] **DOMAIN-01** Registrar dominio `intelifin.online`
   - Verificar disponibilidad y comprar (Namecheap / Cloudflare)
-  - Configurar en Vercel: Dashboard → Domains → Add → `intefin.app`
+  - Configurar en Vercel: Dashboard → Domains → Add → `intelifin.online`
 
-- [ ] **EMAIL-01** Verificar `intefin.app` en Resend y re-activar SMTP en Supabase
-  - Resend Dashboard → Domains → Add `intefin.app` → agregar registros DNS
-  - Supabase Dashboard → Auth → SMTP → Enable Custom SMTP con `hola@intefin.app`
-  - Agregar redirect URL: `https://intefin.app/auth/callback`
+- [ ] **EMAIL-01** Verificar `intelifin.online` en Resend y re-activar SMTP en Supabase
+  - Resend Dashboard → Domains → Add `intelifin.online` → agregar registros DNS
+  - Supabase Dashboard → Auth → SMTP → Enable Custom SMTP con `hola@intelifin.online`
+  - Agregar redirect URL: `https://intelifin.online/auth/callback`
   - **Mientras tanto:** Custom SMTP deshabilitado — Supabase relay por defecto (~3 emails/hora)
 
 - [ ] **TEST-01** Smoke test completo en producción
@@ -155,4 +155,4 @@
 | `financial_diagnostics` inmutable | Permite comparar "antes vs ahora" con datos reales |
 | Email fire-and-forget con `.catch()` | Un email fallido no bloquea la invitación o el onboarding |
 | Wompi en lugar de Stripe | Stripe no tiene presencia en Colombia |
-| Supabase SMTP deshabilitado temporalmente | `intefin.app` no verificado en Resend — re-habilitar cuando el dominio esté registrado |
+| Supabase SMTP deshabilitado temporalmente | `intelifin.online` no verificado en Resend — re-habilitar cuando el dominio esté registrado |

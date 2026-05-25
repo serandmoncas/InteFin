@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
       const coachEmail = authData?.user?.email
 
       if (coachEmail) {
-        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intefin.vercel.app"
+        const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intelifin.online"
         void sendPlanUpgradeEmail({
           coachEmail,
           coachName:     coachProfile.full_name ?? "Coach",

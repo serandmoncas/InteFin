@@ -10,7 +10,7 @@ export default function LandingPage() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-xs font-bold">
               IF
             </div>
-            <span className="font-semibold text-sm">InteFin</span>
+            <span className="font-semibold text-sm">InteliFin</span>
           </div>
           <div className="flex items-center gap-3">
             <Link
@@ -59,7 +59,7 @@ export default function LandingPage() {
           </h1>
 
           <p className="text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-            InteFin es la plataforma que organiza tu práctica de coaching financiero.
+            InteliFin es la plataforma que organiza tu práctica de coaching financiero.
             Diagnósticos, dashboards y seguimiento mensual — todo en un solo lugar.
           </p>
 
@@ -212,7 +212,7 @@ export default function LandingPage() {
               IF
             </div>
             <span className="text-slate-500 text-sm">
-              InteFin · Inteligencia Financiera
+              InteliFin · Inteligencia Financiera
             </span>
           </div>
           <p className="text-slate-600 text-xs">
@@ -346,7 +346,7 @@ function AudienceCard({ tag, tagColor, title, bullets, cta }: AudienceCardProps)
 const STEPS = [
   {
     title: "Invita a tu cliente",
-    desc: "Mandas un email desde InteFin. Tu cliente recibe un link mágico, sin contraseñas.",
+    desc: "Mandas un email desde InteliFin. Tu cliente recibe un link mágico, sin contraseñas.",
   },
   {
     title: "Completa el diagnóstico",
@@ -391,7 +391,7 @@ function HeroMockup() {
             <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
             <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400" />
-            <span className="text-slate-500 text-xs ml-3">intefin.app/app/dashboard</span>
+            <span className="text-slate-500 text-xs ml-3">intelifin.online/app/dashboard</span>
           </div>
 
           {/* Mockup body */}

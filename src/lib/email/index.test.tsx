@@ -24,7 +24,7 @@ describe("sendClientInviteEmail", () => {
       clientName: "Ana García",
       coachName: "Mabel Álvarez",
       orgName: "Finanzas con Mabel",
-      inviteLink: "https://intefin.app/invite/abc",
+      inviteLink: "https://intelifin.online/invite/abc",
     })
 
     expect(mockSendEmail).toHaveBeenCalledOnce()
@@ -32,7 +32,7 @@ describe("sendClientInviteEmail", () => {
     expect(call.to).toBe("client@example.com")
     expect(call.subject).toContain("Mabel Álvarez")
     expect(call.text).toContain("Ana García")
-    expect(call.text).toContain("https://intefin.app/invite/abc")
+    expect(call.text).toContain("https://intelifin.online/invite/abc")
   })
 })
 
@@ -42,7 +42,7 @@ describe("sendCoachWelcomeEmail", () => {
       coachEmail: "coach@example.com",
       coachName: "Mabel Álvarez",
       orgName: "Finanzas con Mabel",
-      siteUrl: "https://intefin.vercel.app",
+      siteUrl: "https://intelifin.online",
     })
 
     expect(mockSendEmail).toHaveBeenCalledOnce()
@@ -59,7 +59,7 @@ describe("sendPlanUpgradeEmail", () => {
       coachEmail: "coach@example.com",
       coachName: "Mabel Álvarez",
       planExpiresAt: "2026-06-24T00:00:00Z",
-      siteUrl: "https://intefin.vercel.app",
+      siteUrl: "https://intelifin.online",
     })
 
     expect(mockSendEmail).toHaveBeenCalledOnce()
@@ -75,7 +75,7 @@ describe("sendPlanUpgradeEmail", () => {
         coachEmail: "coach@example.com",
         coachName: "Mabel",
         planExpiresAt: null,
-        siteUrl: "https://intefin.vercel.app",
+        siteUrl: "https://intelifin.online",
       })
     ).resolves.toBeUndefined()
   })

@@ -39,8 +39,8 @@ export async function startProCheckout(): Promise<StartCheckoutResult> {
   }
 
   const amountCOP   = PLANS.pro.monthlyPriceCOP
-  const reference   = `intefin_${profile.organization_id.slice(0, 8)}_${Date.now()}`
-  const siteUrl     = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intefin.vercel.app"
+  const reference   = `intelifin_${profile.organization_id.slice(0, 8)}_${Date.now()}`
+  const siteUrl     = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intelifin.online"
   const redirectUrl = `${siteUrl}/coach/settings?payment=${reference}`
 
   // Insert pending payment record

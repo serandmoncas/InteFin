@@ -35,7 +35,7 @@ export async function sendClientInviteEmail(
 ): Promise<void> {
   await sendEmail({
     to: params.clientEmail,
-    subject: `${params.coachName} te invitó a InteFin`,
+    subject: `${params.coachName} te invitó a InteliFin`,
     react: React.createElement(ClientInvite, {
       clientName: params.clientName,
       coachName: params.coachName,
@@ -45,7 +45,7 @@ export async function sendClientInviteEmail(
     text: [
       `Hola ${params.clientName},`,
       "",
-      `${params.coachName} te invitó a completar tu diagnóstico financiero en InteFin.`,
+      `${params.coachName} te invitó a completar tu diagnóstico financiero en InteliFin.`,
       "",
       `Entra aquí: ${params.inviteLink}`,
       "",
@@ -61,14 +61,14 @@ export async function sendCoachWelcomeEmail(
 ): Promise<void> {
   await sendEmail({
     to: params.coachEmail,
-    subject: `¡Bienvenido a InteFin, ${params.coachName}!`,
+    subject: `¡Bienvenido a InteliFin, ${params.coachName}!`,
     react: React.createElement(CoachWelcome, {
       coachName: params.coachName,
       orgName: params.orgName,
       siteUrl: params.siteUrl,
     }),
     text: [
-      `¡Bienvenido a InteFin, ${params.coachName}!`,
+      `¡Bienvenido a InteliFin, ${params.coachName}!`,
       "",
       `Tu práctica "${params.orgName}" ya está lista.`,
       "",
@@ -89,7 +89,7 @@ export async function sendPlanUpgradeEmail(
 ): Promise<void> {
   await sendEmail({
     to: params.coachEmail,
-    subject: "Tu plan Pro está activo — InteFin",
+    subject: "Tu plan Pro está activo — InteliFin",
     react: React.createElement(PlanUpgrade, {
       coachName: params.coachName,
       planExpiresAt: params.planExpiresAt,
