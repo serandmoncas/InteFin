@@ -104,12 +104,12 @@
 
 ### UX / Pulido
 
-- [ ] **UX-04** Toast de éxito/error global
+- [x] **UX-04** Toast de éxito/error global *(2026-05-25)*
   - Instalar `sonner` o `react-hot-toast`
   - Reemplazar mensajes inline dispersos con un sistema centralizado
   - Disparar desde server actions vía `useActionState` o callbacks
 
-- [ ] **UX-05** Indicador de página activa en sidebar y nav
+- [x] **UX-05** Indicador de página activa en sidebar y nav *(2026-05-25)*
   - El link de la página actual no tiene highlight visual
   - Usar `usePathname()` para comparar con `href`
 

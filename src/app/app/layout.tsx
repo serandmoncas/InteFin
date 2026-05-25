@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
-import Link from "next/link"
+import { ClientNav } from "@/components/client/ClientNav"
 
 export default async function ClientAppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -29,17 +29,7 @@ export default async function ClientAppLayout({ children }: { children: React.Re
           </div>
           <span className="text-slate-100 font-semibold text-sm">InteliFin</span>
         </div>
-        <nav className="hidden sm:flex items-center gap-6">
-          {[
-            { href: "/app/dashboard", label: "Dashboard" },
-            { href: "/app/goals",     label: "Metas" },
-            { href: "/app/sessions",  label: "Sesiones" },
-          ].map(({ href, label }) => (
-            <Link key={href} href={href} className="text-slate-400 hover:text-slate-200 text-sm transition-colors">
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <ClientNav />
         <div className="w-8 h-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-bold">
           {initials}
         </div>
