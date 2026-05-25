@@ -28,6 +28,14 @@ export async function createGoal(
     return { error: "Solo coaches pueden crear metas." }
   }
 
+  if (!coachProfile.organization_id) {
+    return { error: "Perfil de coach incompleto. Completa el onboarding primero." }
+  }
+
+  if (!input.title.trim()) {
+    return { error: "El título de la meta es requerido." }
+  }
+
   // Verify the client belongs to this coach's org
   const { data: clientProfile } = await supabase
     .from("client_profiles")
@@ -39,14 +47,19 @@ export async function createGoal(
     return { error: "Cliente no encontrado en tu organización." }
   }
 
+  const targetAmountNum = input.targetAmount ? Number(input.targetAmount) : null
+  if (targetAmountNum !== null && isNaN(targetAmountNum)) {
+    return { error: "El monto objetivo debe ser un número válido." }
+  }
+
   const { error } = await supabase
     .from("goals")
     .insert({
       client_id:       input.clientId,
-      organization_id: coachProfile.organization_id!,
+      organization_id: coachProfile.organization_id,
       title:           input.title.trim(),
       description:     input.description.trim() || null,
-      target_amount:   input.targetAmount ? Number(input.targetAmount) : null,
+      target_amount:   targetAmountNum,
       target_date:     input.targetDate || null,
       status:          "pending",
     })
@@ -57,6 +70,8 @@ export async function createGoal(
   return {}
 }
 
+// Client-only action: looks up client_profile by user_id.
+// Coaches calling this will get an error (they have no client_profile row), which is intentional.
 export async function updateGoalStatus(
   goalId: string,
   status: "in_progress" | "completed",
