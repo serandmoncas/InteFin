@@ -3,6 +3,7 @@ import { sendEmail } from "./send"
 import { ClientInvite } from "./templates/ClientInvite"
 import { CoachWelcome } from "./templates/CoachWelcome"
 import { PlanUpgrade } from "./templates/PlanUpgrade"
+import { ProRenewalReminder } from "./templates/ProRenewalReminder"
 
 // ── Types ──────────────────────────────────────────────────────────────────
 
@@ -25,6 +26,13 @@ export interface PlanUpgradeEmailParams {
   coachEmail: string
   coachName: string
   planExpiresAt: string | null
+  siteUrl: string
+}
+
+export interface ProRenewalReminderEmailParams {
+  coachEmail: string
+  coachName: string
+  planExpiresAt: string   // ISO date — must be non-null for reminder
   siteUrl: string
 }
 
@@ -113,5 +121,33 @@ export async function sendPlanUpgradeEmail(
     ]
       .filter((line) => line !== null)
       .join("\n"),
+  })
+}
+
+export async function sendProRenewalReminderEmail(
+  params: ProRenewalReminderEmailParams
+): Promise<void> {
+  const expiryFormatted = new Date(params.planExpiresAt).toLocaleDateString("es-CO", {
+    year: "numeric", month: "long", day: "numeric",
+  })
+  await sendEmail({
+    to: params.coachEmail,
+    subject: `Tu plan Pro de InteliFin vence en 7 días (${expiryFormatted})`,
+    react: React.createElement(ProRenewalReminder, {
+      coachName: params.coachName,
+      planExpiresAt: params.planExpiresAt,
+      siteUrl: params.siteUrl,
+    }),
+    text: [
+      `Hola ${params.coachName},`,
+      "",
+      `Tu plan Pro de InteliFin vence el ${expiryFormatted}.`,
+      "",
+      "Para renovar, ve a Configuración → Plan y haz clic en 'Activar Pro'.",
+      "",
+      `${params.siteUrl}/coach/settings`,
+      "",
+      "Si no renuevas, tu cuenta pasará al plan Free (máx. 3 clientes activos).",
+    ].join("\n"),
   })
 }

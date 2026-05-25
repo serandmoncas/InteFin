@@ -1,5 +1,11 @@
 {
   "github": {
     "autoJobCancelation": true
-  }
+  },
+  "crons": [
+    {
+      "path": "/api/cron/pro-renewal-reminder",
+      "schedule": "0 10 * * *"
+    }
+  ]
 }

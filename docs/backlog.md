@@ -97,8 +97,8 @@
 
 ### Coach — Features pendientes
 
-- [ ] **COACH-01** `/coach/clients/[id]/edit` — ajustar target de Inversiones
-- [ ] **COACH-02** Notas privadas por cliente (textarea + guardar en sesión)
+- [x] **COACH-01** `/coach/clients/[id]/edit` — ajustar target de Inversiones *(2026-05-25)*
+- [x] **COACH-02** Notas privadas por cliente (textarea + guardar en sesión) *(2026-05-25)*
 - [x] **COACH-03** `/coach/sessions` — registro + historial de sesiones *(2026-05-25)*
 
 ### Cliente — Features pendientes
@@ -118,7 +118,7 @@
 
 ### Billing
 
-- [ ] **BILLING-01** Email de recordatorio 7 días antes de que expire el plan Pro (nuevo template)
+- [x] **BILLING-01** Email de recordatorio 7 días antes de que expire el plan Pro *(2026-05-25)*
 - [ ] **BILLING-02** Historial de pagos en `/coach/settings`
 
 ### Técnico
