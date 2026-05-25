@@ -19,7 +19,7 @@ MVP centrado en la práctica de Mabel Álvarez; arquitectura lista para escalar 
 | UI | shadcn/ui + Tailwind CSS (dark theme) |
 | i18n | next-intl (ES + EN) — installed, not yet configured |
 | Charts | Recharts |
-| Email | Resend (installed, not yet wired) |
+| Email | Resend + React Email (wired — ver `src/lib/email/`) |
 | Hosting | Vercel |
 
 ## Commands
@@ -49,6 +49,16 @@ NEXT_PUBLIC_SUPABASE_URL=https://cgeowklrdzhlwhllfopo.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 SUPABASE_SERVICE_ROLE_KEY=eyJ...        # Dashboard → Settings → API → service_role
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# Email (Resend) — server-only, never NEXT_PUBLIC_
+RESEND_API_KEY=re_...                   # resend.com/api-keys
+EMAIL_FROM=InteFin <hola@intefin.app>  # sender must match a verified Resend domain
+
+# Billing (Wompi — Colombia)
+WOMPI_PUBLIC_KEY=pub_...
+WOMPI_PRIVATE_KEY=prv_...
+WOMPI_INTEGRITY_SECRET=...
+WOMPI_EVENTS_SECRET=...                 # webhook signature verification
 ```
 
 ## Supabase Project
@@ -77,23 +87,50 @@ Every data table has `organization_id`. Supabase RLS policies use `get_my_org_id
 ```
 src/
 ├── app/
-│   ├── auth/callback/route.ts   — handles magic link + invite flows
-│   ├── auth/login/page.tsx      — email input, sends OTP
-│   ├── onboarding/page.tsx      — coach creates org + profile
+│   ├── auth/callback/route.ts        — magic link + invite flows
+│   ├── auth/login/page.tsx           — OTP email input
+│   ├── onboarding/page.tsx           — coach creates org + profile
 │   ├── coach/
-│   │   ├── layout.tsx           — auth guard + sidebar, loads profile+org server-side
-│   │   ├── overview/page.tsx    — stats + recent clients
-│   │   ├── clients/page.tsx     — full client list
-│   │   └── invite/page.tsx      — invite client by email
+│   │   ├── layout.tsx                — auth guard + sidebar
+│   │   ├── overview/page.tsx         — stats + recent clients
+│   │   ├── clients/page.tsx          — full client list
+│   │   ├── clients/[id]/page.tsx     — client detail: profile + 4 accounts
+│   │   ├── invite/page.tsx           — invite client by email
+│   │   ├── leads/page.tsx            — quiz leads capture
+│   │   └── settings/page.tsx         — org settings + plan card
+│   ├── api/
+│   │   └── wompi/webhook/route.ts    — Wompi payment webhook → activates Pro plan
+│   ├── [slug]/page.tsx               — public coach profile
+│   └── [slug]/test/page.tsx          — public financial quiz (lead gen)
 ├── actions/
-│   ├── onboarding.ts            — completeCoachOnboarding server action
-│   └── coach.ts                 — inviteClient server action
-├── lib/supabase/
-│   ├── client.ts                — browser client
-│   ├── server.ts                — server client (SSR)
-│   ├── admin.ts                 — service_role client (server actions only)
-│   └── types.ts                 — generated + manual TypeScript types
-└── middleware.ts                 — auth guard for /app, /coach, /admin, /onboarding
+│   ├── onboarding.ts                 — completeCoachOnboarding (sends welcome email)
+│   ├── coach.ts                      — inviteClient (sends invite email)
+│   ├── billing.ts                    — startProCheckout → Wompi URL
+│   ├── settings.ts                   — updateOrgSettings
+│   └── quiz.ts                       — submitQuizLead
+├── lib/
+│   ├── supabase/
+│   │   ├── client.ts                 — browser client
+│   │   ├── server.ts                 — server client (SSR)
+│   │   ├── admin.ts                  — service_role client (server actions only)
+│   │   └── types.ts                  — generated + manual TypeScript types
+│   ├── email/
+│   │   ├── client.ts                 — Resend SDK singleton
+│   │   ├── send.ts                   — sendEmail() wrapper (never throws)
+│   │   ├── index.ts                  — public API: sendClientInviteEmail, sendCoachWelcomeEmail, sendPlanUpgradeEmail
+│   │   └── templates/
+│   │       ├── ClientInvite.tsx      — invite email with magic link
+│   │       ├── CoachWelcome.tsx      — welcome email after onboarding
+│   │       └── PlanUpgrade.tsx       — Pro plan activation confirmation
+│   ├── plan/
+│   │   ├── limits.ts                 — PLANS config, hasClientCapacity()
+│   │   └── expiration.ts             — effectivePlan(), extendExpiration()
+│   ├── wompi/
+│   │   ├── checkout.ts               — buildCheckoutUrl(), signed URL generation
+│   │   └── webhook.ts                — verifyEventSignature(), WompiEvent types
+│   └── quiz/
+│       └── score.ts                  — computeQuizResult()
+└── middleware.ts                      — auth guard for /app, /coach, /admin, /onboarding
 ```
 
 ## Database Tables
@@ -132,6 +169,33 @@ score = (
   debt_ratio_score    * 0.10     // max 10 pts
 ) * 100
 ```
+
+## Billing — Wompi (Colombia)
+
+- Coach inicia pago desde `/coach/settings` → `startProCheckout()` → redirect a Wompi
+- Wompi llama a `POST /api/wompi/webhook` al completar el pago
+- Webhook verifica HMAC, actualiza `subscription_payments`, activa `organizations.plan = 'pro'`
+- Plan Pro expira en `plan_expires_at`; `effectivePlan()` revierte a Free si expiró
+- Test keys en `.env.local`; producción usa keys reales en Vercel
+
+## Email — Resend + React Email
+
+- `src/lib/email/` — módulo completo con 3 templates en español, paleta dark de InteFin
+- `sendEmail()` es fire-and-forget: nunca lanza, loggea en consola si no hay `RESEND_API_KEY`
+- Disparado desde: `inviteClient()`, `completeCoachOnboarding()`, webhook Wompi
+- **Pendiente:** dominio `intefin.app` debe estar verificado en Resend para que el SMTP funcione
+- Mientras tanto: deshabilitar Custom SMTP en Supabase Dashboard y usar el relay por defecto
+
+## Plan System
+
+| Plan | Límite | Precio |
+|------|--------|--------|
+| Free | 3 clientes activos | $0 |
+| Pro | Ilimitado | $50.000 COP/mes |
+
+- `PLANS` en `src/lib/plan/limits.ts`
+- `hasClientCapacity()` se evalúa en `inviteClient()` antes de crear la invitación
+- `effectivePlan()` usa `plan_expires_at` para revertir Pro → Free si expiró
 
 ## Visual Design
 
