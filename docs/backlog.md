@@ -91,7 +91,7 @@
 - [x] **UX-01** Traducir mensajes de error del login al español *(2026-05-25)*
 - [x] **UX-02** Estado de éxito tras enviar magic link *(ya estaba implementado)*
 
-- [ ] **UX-03** Página 404 y error boundaries globales
+- [x] **UX-03** Página 404 y error boundaries globales *(2026-05-25)*
   - `src/app/not-found.tsx` con diseño dark theme
   - Error boundary en layouts `/coach` y `/app`
 
@@ -104,8 +104,8 @@
 ### Cliente — Features pendientes
 
 - [x] **CLIENT-01** Gráfica histórica de evolución por cuenta (Recharts + `account_snapshots`) *(2026-05-25)*
-- [ ] **CLIENT-02** `/app/goals` — metas financieras con hitos (tabla `goals` ya existe)
-- [ ] **CLIENT-03** `/app/sessions` — historial de sesiones visible al cliente
+- [x] **CLIENT-02** `/app/goals` — metas financieras con hitos (tabla `goals` ya existe) *(2026-05-25)*
+- [x] **CLIENT-03** `/app/sessions` — historial de sesiones visible al cliente *(2026-05-25)*
 
 ---
 
