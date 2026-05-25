@@ -20,6 +20,8 @@
   - [10. Registrar una sesión de coaching](#10-registrar-una-sesión-de-coaching)
   - [11. Compartir tu link público](#11-compartir-tu-link-público)
   - [12. Gestionar leads del test gratuito](#12-gestionar-leads-del-test-gratuito)
+  - [13. Ver todas las sesiones (vista global)](#13-ver-todas-las-sesiones-vista-global)
+  - [14. Gestionar metas del cliente](#14-gestionar-metas-del-cliente)
 - [Para Clientes](#para-clientes)
   - [1. Recibir tu invitación](#1-recibir-tu-invitación)
   - [2. Completar tu diagnóstico inicial](#2-completar-tu-diagnóstico-inicial)
@@ -27,6 +29,7 @@
   - [4. Actualizar tus saldos mensualmente](#4-actualizar-tus-saldos-mensualmente)
   - [5. Ver tu evolución histórica](#5-ver-tu-evolución-histórica)
   - [6. Ver tus sesiones con el coach](#6-ver-tus-sesiones-con-el-coach)
+  - [7. Ver y avanzar tus metas](#7-ver-y-avanzar-tus-metas)
 - [Para Visitantes Públicos](#para-visitantes-públicos)
   - [1. Hacer el test gratuito de salud financiera](#1-hacer-el-test-gratuito-de-salud-financiera)
   - [2. Contactar al coach](#2-contactar-al-coach)
@@ -127,6 +130,7 @@ El detalle te muestra:
 | **Diagnóstico** | Activos, deudas, patrimonio neto, salud/pensión, meta principal |
 | **Las 4 Cuentas** | Con barras de progreso editables |
 | **Sesiones** | Historial de sesiones registradas + botón para nueva |
+| **Metas** | Metas financieras del cliente + botón para agregar nueva |
 
 ---
 
@@ -231,6 +235,53 @@ Verás 2 secciones:
 1. Llega un lead nuevo → click en su email o WhatsApp para contactarlo
 2. Una vez le escribiste, click en **"Marcar como contactado ✓"** → pasa a la sección de abajo
 3. Si decide trabajar contigo, vas a **✉️ Invitar** y lo conviertes en cliente formal
+
+---
+
+### 13. Ver todas las sesiones (vista global)
+
+En el menú lateral, click en **📋 Sesiones**.
+
+Esta vista muestra **todas las sesiones de todos tus clientes** en una sola tabla, ordenadas por fecha descendente.
+
+| Columna | Descripción |
+|---------|-------------|
+| **Cliente** | Nombre con link a su perfil |
+| **Fecha** | Fecha de la sesión |
+| **Sesión #** | Número secuencial por cliente |
+| **Resumen** | Primeras 80 palabras del resumen |
+
+**Filtrar por cliente:** Usa el selector en la parte superior para ver solo las sesiones de un cliente específico.
+
+> Para agregar una nueva sesión, entra al **detalle del cliente** → sección "Sesiones" → **"+ Nueva sesión"**.
+
+---
+
+### 14. Gestionar metas del cliente
+
+En el detalle de un cliente, al final de la página verás la sección **"Metas"**.
+
+**Para agregar una meta:**
+1. Click en **"+ Agregar meta"**
+2. Llena:
+   - **Título** (obligatorio) — ej: "Completar fondo de emergencia"
+   - **Descripción** — contexto o instrucciones (opcional)
+   - **Monto objetivo** — valor en pesos COP (opcional)
+   - **Fecha límite** — cuándo debe lograrlo (opcional)
+3. Click **"Guardar meta"**
+
+La meta se crea con estado **Pendiente** y el cliente la ve inmediatamente en su portal.
+
+**Estados posibles de una meta:**
+
+| Estado | Badge | Significado |
+|--------|-------|-------------|
+| Pendiente | Gris | Sin iniciar |
+| En progreso | Índigo | El cliente marcó que está trabajando en ella |
+| Completada | Verde | El cliente la marcó como lograda |
+| Cancelada | Rojo | Cancelada (solo visible internamente) |
+
+> El cliente avanza el estado desde su portal (`/app/goals`). El coach define las metas.
 
 ---
 
@@ -351,6 +402,28 @@ Verás cada sesión con:
 - **Tus tareas** — checklist de acciones que debes ejecutar antes de la próxima sesión
 
 > Las notas privadas del coach **nunca aparecen aquí**. Solo ves lo que el coach decidió compartir contigo.
+
+---
+
+### 7. Ver y avanzar tus metas
+
+En el menú superior, click en **Metas** (`/app/goals`).
+
+Tu coach define metas para ti. Cada meta muestra:
+- **Título** y descripción
+- **Monto objetivo** (si aplica)
+- **Fecha límite** (si aplica)
+- **Estado actual** (Pendiente / En progreso / Completada)
+
+**Para avanzar el estado de una meta:**
+1. Click en el botón de la meta:
+   - Si está **Pendiente** → click **"Iniciar"** → pasa a **En progreso**
+   - Si está **En progreso** → click **"Marcar completa"** → pasa a **Completada**
+2. El cambio es inmediato y tu coach puede verlo en su panel
+
+Las metas se organizan por estado: primero las **En progreso**, luego las **Pendientes**, y al final las **Completadas**.
+
+> Tu coach es quien crea y cancela metas. Tú solo puedes avanzarlas hacia adelante.
 
 ---
 
