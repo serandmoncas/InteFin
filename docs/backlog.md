@@ -60,52 +60,90 @@
 - [x] Template `ClientInvite` — magic link al cliente invitado
 - [x] Template `CoachWelcome` — bienvenida al coach tras onboarding
 - [x] Template `PlanUpgrade` — confirmación activación Pro
+- [x] Template `ProRenewalReminder` — recordatorio 7 días antes de vencer
 - [x] Integración en `inviteClient()`, `completeCoachOnboarding()`, webhook Wompi
 - [x] Dev mode: loggea a consola si no hay `RESEND_API_KEY`
+
+**UX**
+- [x] **UX-01** Traducir mensajes de error del login al español *(2026-05-25)*
+- [x] **UX-02** Estado de éxito tras enviar magic link *(2026-05-25)*
+- [x] **UX-03** Página 404 y error boundaries globales *(2026-05-25)*
+
+**Coach**
+- [x] **COACH-01** Editar targets de las 4 cuentas inline *(2026-05-25)*
+- [x] **COACH-02** Notas privadas por cliente *(2026-05-25)*
+- [x] **COACH-03** `/coach/sessions` — historial global de sesiones *(2026-05-25)*
+
+**Cliente**
+- [x] **CLIENT-01** Gráfica histórica de evolución por cuenta *(2026-05-25)*
+- [x] **CLIENT-02** `/app/goals` — metas financieras *(2026-05-25)*
+- [x] **CLIENT-03** `/app/sessions` — historial de sesiones *(2026-05-25)*
+
+**Billing**
+- [x] **BILLING-01** Email recordatorio 7 días antes de vencer Pro *(2026-05-25)*
 
 ---
 
 ## 🚨 Bloqueante — resolver antes de usar con clientes reales
 
-- [ ] **DOMAIN-01** Registrar dominio `intelifin.online`
-  - Verificar disponibilidad y comprar (Namecheap / Cloudflare)
-  - Configurar en Vercel: Dashboard → Domains → Add → `intelifin.online`
+- [ ] **DOMAIN-01** Conectar `intelifin.online` en Vercel
+  - Vercel Dashboard → Settings → Domains → Add `intelifin.online`
 
 - [ ] **EMAIL-01** Verificar `intelifin.online` en Resend y re-activar SMTP en Supabase
-  - Resend Dashboard → Domains → Add `intelifin.online` → agregar registros DNS
+  - Resend Dashboard → Domains → verificar → copiar nueva API key
   - Supabase Dashboard → Auth → SMTP → Enable Custom SMTP con `hola@intelifin.online`
   - Agregar redirect URL: `https://intelifin.online/auth/callback`
-  - **Mientras tanto:** Custom SMTP deshabilitado — Supabase relay por defecto (~3 emails/hora)
 
 - [ ] **TEST-01** Smoke test completo en producción
   - Crear cuenta coach → invitar cliente → completar diagnóstico → ver dashboard
-  - Verificar que el email de invitación llega al cliente
-  - Verificar que el email de bienvenida llega al coach
+  - Verificar que los emails llegan (invitación + bienvenida)
 
 ---
 
-## 🔥 Próximos — alta prioridad
+## 🔥 Alta prioridad
 
 ### UX / Pulido
 
-- [x] **UX-01** Traducir mensajes de error del login al español *(2026-05-25)*
-- [x] **UX-02** Estado de éxito tras enviar magic link *(ya estaba implementado)*
+- [ ] **UX-04** Toast de éxito/error global
+  - Instalar `sonner` o `react-hot-toast`
+  - Reemplazar mensajes inline dispersos con un sistema centralizado
+  - Disparar desde server actions vía `useActionState` o callbacks
 
-- [x] **UX-03** Página 404 y error boundaries globales *(2026-05-25)*
-  - `src/app/not-found.tsx` con diseño dark theme
-  - Error boundary en layouts `/coach` y `/app`
+- [ ] **UX-05** Indicador de página activa en sidebar y nav
+  - El link de la página actual no tiene highlight visual
+  - Usar `usePathname()` para comparar con `href`
 
-### Coach — Features pendientes
+- [ ] **UX-06** Menú móvil en `/app`
+  - El nav superior usa `hidden sm:flex` — desaparece en pantallas pequeñas
+  - Agregar hamburger menu o bottom nav para móvil
 
-- [x] **COACH-01** `/coach/clients/[id]/edit` — ajustar target de Inversiones *(2026-05-25)*
-- [x] **COACH-02** Notas privadas por cliente (textarea + guardar en sesión) *(2026-05-25)*
-- [x] **COACH-03** `/coach/sessions` — registro + historial de sesiones *(2026-05-25)*
+- [ ] **UX-07** Skeletons de carga
+  - Las páginas muestran vacío mientras cargan datos del servidor
+  - Agregar `loading.tsx` en rutas críticas: `/coach/overview`, `/app/dashboard`
 
-### Cliente — Features pendientes
+### Coach — Features
 
-- [x] **CLIENT-01** Gráfica histórica de evolución por cuenta (Recharts + `account_snapshots`) *(2026-05-25)*
-- [x] **CLIENT-02** `/app/goals` — metas financieras con hitos (tabla `goals` ya existe) *(2026-05-25)*
-- [x] **CLIENT-03** `/app/sessions` — historial de sesiones visible al cliente *(2026-05-25)*
+- [ ] **COACH-04** Editar sesión ya registrada
+  - Actualmente solo se puede crear, no modificar
+  - Botón "Editar" en cada sesión → mismo formulario pre-llenado
+
+- [ ] **COACH-05** Cambiar estado del cliente desde la lista
+  - Activar / pausar / completar sin entrar al detalle
+  - Dropdown de estado en cada fila de `/coach/clients`
+
+- [ ] **COACH-06** Buscador en `/coach/clients`
+  - Input de filtro por nombre cuando hay muchos clientes
+  - Filtro client-side sobre la lista ya cargada
+
+### Cliente — Features
+
+- [ ] **CLIENT-04** Indicador de tendencia en patrimonio neto
+  - Flecha ↑↓ y delta comparando con el snapshot del mes anterior
+  - Visible en el hero del dashboard
+
+- [ ] **CLIENT-05** Barra de progreso en metas con monto objetivo
+  - Si `target_amount` está definido, mostrar `current / target` con barra
+  - El cliente actualiza el avance en pesos desde `/app/goals`
 
 ---
 
@@ -113,13 +151,43 @@
 
 ### Onboarding de nuevos coaches
 
-- [ ] **SAAS-01** Self-service para coaches que no son Mabel (email de bienvenida ya listo ✓)
-- [ ] **SAAS-02** Super admin `/admin` — lista de orgs, activación manual de Pro
+- [ ] **SAAS-01** Self-service para coaches nuevos
+  - Cualquier persona puede registrarse sin intervención manual
+  - Email de bienvenida ya listo ✓
+
+- [ ] **SAAS-02** Super admin `/admin`
+  - Lista de organizaciones con métricas (clientes, plan, última actividad)
+  - Activación manual de plan Pro
+  - Solo accesible con `role='super_admin'`
+
+- [ ] **SAAS-03** Email mensual de recordatorio al cliente
+  - "Actualiza tus saldos este mes" — enviado el día 1 de cada mes
+  - Nuevo template + nuevo cron en `vercel.json`
 
 ### Billing
 
-- [x] **BILLING-01** Email de recordatorio 7 días antes de que expire el plan Pro *(2026-05-25)*
 - [ ] **BILLING-02** Historial de pagos en `/coach/settings`
+  - Tabla con fecha, monto, estado, referencia Wompi
+  - Query sobre `subscription_payments` filtrado por `organization_id`
+
+- [ ] **BILLING-03** Plan anual con descuento
+  - Opción de pagar 12 meses (ej: 10 meses al precio de 12)
+  - Nueva opción en el checkout de Wompi
+
+- [ ] **BILLING-04** Período de gracia al vencer
+  - 7 días de gracia antes de regresar a Free tras el vencimiento
+  - Ajustar `effectivePlan()` para incluir el grace period
+
+### Coach — Analytics
+
+- [ ] **COACH-07** Métricas ampliadas en `/coach/overview`
+  - Score promedio de todos los clientes activos
+  - Tasa de conversión de leads → clientes
+  - Clientes activos vs pausados vs completados (donut chart)
+
+- [ ] **COACH-08** Historial de diagnósticos del cliente
+  - Los diagnósticos son inmutables — la tabla ya guarda múltiples snapshots
+  - UI para comparar patrimonio neto entre diagnósticos en el detalle del cliente
 
 ### Técnico
 
@@ -129,19 +197,56 @@
 - [ ] **TECH-02** Actualizar `@react-email/components` (v1.0.12 deprecated)
   - Migrar a paquetes individuales `@react-email/html`, `@react-email/body`, etc.
 
-- [ ] **TECH-03** Migrar Wompi a producción (cambiar test keys por keys reales en Vercel)
+- [ ] **TECH-03** Migrar Wompi a producción
+  - Cambiar test keys por keys reales en Vercel env vars
 
-- [ ] **TECH-04** Observabilidad — logs estructurados + Sentry en producción
+- [ ] **TECH-04** Observabilidad — Sentry en producción
+  - Instalar `@sentry/nextjs`, configurar DSN en Vercel
+  - Capturar errores de server actions y API routes
+
+- [ ] **TECH-05** PWA — instalable en móvil
+  - Agregar `next-pwa` o `@ducanh2912/next-pwa`
+  - `manifest.json` + service worker para instalación en iOS/Android
 
 ---
 
 ## 🔮 Fase 3 — Largo plazo
 
-- [ ] AI insights financieros (Claude API analiza el diagnóstico)
-- [ ] Exportación de reportes PDF
-- [ ] i18n completo ES + EN con next-intl (instalado, no configurado)
-- [ ] PWA / mobile optimization
-- [ ] Marketplace de coaches públicos
+### IA
+
+- [ ] **AI-01** Análisis automático del diagnóstico con Claude API
+  - Insights financieros personalizados al completar el onboarding del cliente
+  - Resumen ejecutivo visible en el detalle del cliente para el coach
+
+- [ ] **AI-02** Sugerencia automática de metas basada en el diagnóstico
+  - Claude sugiere 3-5 metas según el diagnóstico inicial
+  - El coach aprueba o descarta antes de enviarlas al cliente
+
+### Exportación
+
+- [ ] **EXPORT-01** Reporte PDF del cliente
+  - Patrimonio neto, score, 4 cuentas, metas, historial de sesiones
+  - Generado con `@react-pdf/renderer` o similar
+
+- [ ] **EXPORT-02** CSV de historial de snapshots
+  - Exportar `account_snapshots` de un cliente para análisis externo
+
+### Crecimiento
+
+- [ ] **GROWTH-01** Compartir resultado del quiz como imagen
+  - Card generada con el score para stories de Instagram
+  - API route que genera imagen con `@vercel/og`
+
+- [ ] **GROWTH-02** Analytics de leads para el coach
+  - Cuántos hicieron el test, cuántos dejaron contacto, tasa de conversión
+  - Gráfica en `/coach/leads`
+
+- [ ] **GROWTH-03** i18n ES + EN
+  - Completar configuración de `next-intl` (ya instalado, no configurado)
+
+- [ ] **GROWTH-04** Marketplace de coaches públicos
+  - Directorio `/coaches` con todos los perfiles públicos
+  - Filtros por especialidad, ciudad, precio
 
 ---
 
@@ -155,4 +260,4 @@
 | `financial_diagnostics` inmutable | Permite comparar "antes vs ahora" con datos reales |
 | Email fire-and-forget con `.catch()` | Un email fallido no bloquea la invitación o el onboarding |
 | Wompi en lugar de Stripe | Stripe no tiene presencia en Colombia |
-| Supabase SMTP deshabilitado temporalmente | `intelifin.online` no verificado en Resend — re-habilitar cuando el dominio esté registrado |
+| Supabase SMTP deshabilitado temporalmente | `intelifin.online` pendiente de verificar en Resend |
