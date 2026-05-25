@@ -1,6 +1,6 @@
 # InteliFin — Backlog
 
-> Última actualización: 2026-05-25
+> Última actualización: 2026-05-25 (sesión 2)
 
 ---
 
@@ -68,6 +68,10 @@
 - [x] **UX-01** Traducir mensajes de error del login al español *(2026-05-25)*
 - [x] **UX-02** Estado de éxito tras enviar magic link *(2026-05-25)*
 - [x] **UX-03** Página 404 y error boundaries globales *(2026-05-25)*
+- [x] **UX-04** Toast de éxito/error global con `sonner` *(2026-05-25)*
+- [x] **UX-05** Indicador de página activa en sidebar y nav *(2026-05-25)*
+- [x] **UX-06** Bottom nav móvil en `/app` *(2026-05-25)*
+- [x] **UX-07** Skeletons de carga en rutas críticas *(2026-05-25)*
 
 **Coach**
 - [x] **COACH-01** Editar targets de las 4 cuentas inline *(2026-05-25)*
@@ -101,25 +105,6 @@
 ---
 
 ## 🔥 Alta prioridad
-
-### UX / Pulido
-
-- [x] **UX-04** Toast de éxito/error global *(2026-05-25)*
-  - Instalar `sonner` o `react-hot-toast`
-  - Reemplazar mensajes inline dispersos con un sistema centralizado
-  - Disparar desde server actions vía `useActionState` o callbacks
-
-- [x] **UX-05** Indicador de página activa en sidebar y nav *(2026-05-25)*
-  - El link de la página actual no tiene highlight visual
-  - Usar `usePathname()` para comparar con `href`
-
-- [x] **UX-06** Menú móvil en `/app` *(2026-05-25)*
-  - El nav superior usa `hidden sm:flex` — desaparece en pantallas pequeñas
-  - Agregar hamburger menu o bottom nav para móvil
-
-- [x] **UX-07** Skeletons de carga *(2026-05-25)*
-  - Las páginas muestran vacío mientras cargan datos del servidor
-  - Agregar `loading.tsx` en rutas críticas: `/coach/overview`, `/app/dashboard`
 
 ### Coach — Features
 

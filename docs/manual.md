@@ -287,6 +287,12 @@ La meta se crea con estado **Pendiente** y el cliente la ve inmediatamente en su
 
 ## Para Clientes
 
+> **Navegación en el portal de cliente (`/app`):**
+> - **Escritorio:** barra horizontal arriba con los links 🏠 Dashboard / 🎯 Metas / 📋 Sesiones
+> - **Celular:** barra de navegación fija en la parte inferior de la pantalla con los mismos 3 destinos
+
+---
+
 ### 1. Recibir tu invitación
 
 Tu coach te invita por dos vías:
@@ -393,7 +399,7 @@ Debajo de las 4 cuentas, verás la gráfica **"Tu evolución"** con líneas de c
 
 ### 6. Ver tus sesiones con el coach
 
-En el menú superior, click en **Sesiones** (`/app/sessions`).
+En el menú superior (escritorio) o en la **barra de navegación inferior** de tu celular, click en **📋 Sesiones** (`/app/sessions`).
 
 Verás cada sesión con:
 - **Número de sesión** (Sesión #1, #2, etc.)
@@ -407,7 +413,7 @@ Verás cada sesión con:
 
 ### 7. Ver y avanzar tus metas
 
-En el menú superior, click en **Metas** (`/app/goals`).
+En el menú superior (escritorio) o en la **barra de navegación inferior** de tu celular, click en **🎯 Metas** (`/app/goals`).
 
 Tu coach define metas para ti. Cada meta muestra:
 - **Título** y descripción
