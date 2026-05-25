@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server"
 import { calculateScore } from "@/lib/score/calculateScore"
 import { ScoreBadge } from "@/components/dashboard/ScoreBadge"
 import { SessionsPanel } from "@/components/coach/SessionsPanel"
+import { GoalList } from "@/components/coach/GoalList"
 import { AccountTargetsEditor } from "@/components/coach/AccountTargetsEditor"
 import { CoachNotes } from "@/components/coach/CoachNotes"
 import type { AccountType } from "@/lib/supabase/types"
@@ -77,6 +78,12 @@ export default async function ClientDetailPage({
     .select("*")
     .eq("client_id", id)
     .order("session_number", { ascending: false })
+
+  const { data: goals } = await supabase
+    .from("goals")
+    .select("*")
+    .eq("client_id", id)
+    .order("created_at", { ascending: false })
 
   const sortedAccounts = accounts
     ? ACCOUNT_ORDER.map((t) => accounts.find((a) => a.account_type === t)).filter(Boolean) as typeof accounts
@@ -179,6 +186,9 @@ export default async function ClientDetailPage({
 
       {/* Sessions */}
       <SessionsPanel clientId={id} sessions={sessions ?? []} />
+
+      {/* Goals */}
+      <GoalList clientId={id} goals={goals ?? []} />
     </div>
   )
 }
