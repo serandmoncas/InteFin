@@ -1,8 +1,8 @@
 "use client"
 
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
@@ -105,7 +105,7 @@ export function EvolutionChart({ accounts, snapshots }: EvolutionChartProps) {
 
       <div className="h-64 -ml-2">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data} margin={{ top: 5, right: 8, left: 8, bottom: 0 }}>
+          <AreaChart data={data} margin={{ top: 5, right: 8, left: 8, bottom: 0 }}>
             <CartesianGrid stroke="#1e293b" strokeDasharray="3 3" vertical={false} />
             <XAxis
               dataKey="monthLabel"
@@ -141,18 +141,20 @@ export function EvolutionChart({ accounts, snapshots }: EvolutionChartProps) {
               formatter={(value: string) => META[value as AccountType]?.label ?? value}
             />
             {visibleTypes.map((type) => (
-              <Line
+              <Area
                 key={type}
                 type="monotone"
                 dataKey={type}
                 stroke={META[type].color}
                 strokeWidth={2}
+                fill={META[type].color}
+                fillOpacity={0.08}
                 dot={{ r: 3, fill: META[type].color, strokeWidth: 0 }}
                 activeDot={{ r: 5 }}
                 connectNulls
               />
             ))}
-          </LineChart>
+          </AreaChart>
         </ResponsiveContainer>
       </div>
     </div>
