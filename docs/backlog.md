@@ -93,10 +93,7 @@
 - [ ] **DOMAIN-01** Conectar `intelifin.online` en Vercel
   - Vercel Dashboard → Settings → Domains → Add `intelifin.online`
 
-- [ ] **EMAIL-01** Verificar `intelifin.online` en Resend y re-activar SMTP en Supabase
-  - Resend Dashboard → Domains → verificar → copiar nueva API key
-  - Supabase Dashboard → Auth → SMTP → Enable Custom SMTP con `hola@intelifin.online`
-  - Agregar redirect URL: `https://intelifin.online/auth/callback`
+- [x] **EMAIL-01** Verificar `intelifin.online` en Resend y re-activar SMTP en Supabase *(2026-05-25)*
 
 - [ ] **TEST-01** Smoke test completo en producción
   - Crear cuenta coach → invitar cliente → completar diagnóstico → ver dashboard
