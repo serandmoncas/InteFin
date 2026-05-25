@@ -107,8 +107,9 @@ export async function inviteClient(formData: FormData): Promise<InviteResult> {
     return { error: `No se pudo generar el link: ${linkError?.message ?? "error desconocido"}` }
   }
 
-  // Fire-and-forget — no bloquea la respuesta al coach
-  void sendClientInviteEmail({
+  // Await before returning — Vercel serverless freezes the function instance
+  // on response, so void/fire-and-forget promises never complete in production.
+  await sendClientInviteEmail({
     clientEmail: email,
     clientName:  fullName,
     coachName:   profile.full_name ?? "Tu coach",

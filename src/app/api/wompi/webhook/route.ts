@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
 
       if (coachEmail) {
         const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intelifin.online"
-        void sendPlanUpgradeEmail({
+        await sendPlanUpgradeEmail({
           coachEmail,
           coachName:     coachProfile.full_name ?? "Coach",
           planExpiresAt: newExpiration.toISOString(),

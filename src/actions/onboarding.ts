@@ -72,9 +72,11 @@ export async function completeCoachOnboarding(formData: FormData) {
     return { error: `No se pudo guardar tu perfil: ${profileError.message}` }
   }
 
-  // Fire-and-forget — redirect() throws internally in Next.js, so we don't await
+  // Await before redirect() — redirect() throws NEXT_REDIRECT internally which
+  // would kill any pending promise if we fired-and-forgot.
+  // Also: Vercel serverless freezes the instance on response, so void promises don't complete.
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://intelifin.online"
-  void sendCoachWelcomeEmail({
+  await sendCoachWelcomeEmail({
     coachEmail: user.email!,
     coachName:  fullName,
     orgName,
