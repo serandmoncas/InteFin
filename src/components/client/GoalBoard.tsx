@@ -1,6 +1,6 @@
 "use client"
 
-import { useTransition } from "react"
+import { useState, useTransition } from "react"
 import { updateGoalStatus } from "@/actions/goals"
 import type { Goal } from "@/lib/supabase/types"
 
@@ -31,11 +31,14 @@ function formatDate(iso: string) {
 
 function GoalCard({ goal }: { goal: Goal }) {
   const [isPending, startTransition] = useTransition()
+  const [actionError, setActionError] = useState("")
 
   function advance() {
     const next = goal.status === "pending" ? "in_progress" : "completed"
+    setActionError("")
     startTransition(async () => {
-      await updateGoalStatus(goal.id, next)
+      const res = await updateGoalStatus(goal.id, next)
+      if (res.error) setActionError(res.error)
     })
   }
 
@@ -81,6 +84,9 @@ function GoalCard({ goal }: { goal: Goal }) {
           <span className="shrink-0 text-xs text-emerald-400 font-medium">✓ Completada</span>
         )}
       </div>
+      {actionError && (
+        <p className="text-red-400 text-xs mt-2">{actionError}</p>
+      )}
     </div>
   )
 }
