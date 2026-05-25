@@ -54,5 +54,6 @@ export async function createSession(input: CreateSessionInput) {
   }
 
   revalidatePath(`/coach/clients/${input.clientId}`)
+  revalidatePath("/coach/sessions")
   return { success: true }
 }
