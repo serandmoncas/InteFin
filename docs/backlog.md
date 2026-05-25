@@ -113,7 +113,7 @@
   - El link de la página actual no tiene highlight visual
   - Usar `usePathname()` para comparar con `href`
 
-- [ ] **UX-06** Menú móvil en `/app`
+- [x] **UX-06** Menú móvil en `/app` *(2026-05-25)*
   - El nav superior usa `hidden sm:flex` — desaparece en pantallas pequeñas
   - Agregar hamburger menu o bottom nav para móvil
 

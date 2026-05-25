@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { ClientNav } from "@/components/client/ClientNav"
+import { ClientBottomNav } from "@/components/client/ClientBottomNav"
 
 export default async function ClientAppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -34,7 +35,9 @@ export default async function ClientAppLayout({ children }: { children: React.Re
           {initials}
         </div>
       </header>
-      <main className="max-w-3xl mx-auto px-4 py-8">{children}</main>
+      {/* pb-20 on mobile gives space above the bottom nav */}
+      <main className="max-w-3xl mx-auto px-4 py-8 pb-24 sm:pb-8">{children}</main>
+      <ClientBottomNav />
     </div>
   )
 }
