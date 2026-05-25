@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { toast } from "sonner"
 import { createSession } from "@/actions/sessions"
 
 interface SessionFormProps {
@@ -42,7 +43,7 @@ export function SessionForm({ clientId, onSaved }: SessionFormProps) {
         deliverables: deliverables.map((d) => d.trim()).filter(Boolean),
       })
       if (res.error) { setError(res.error); return }
-      // Reset form
+      toast.success("Sesión registrada")
       setSummary("")
       setNotes("")
       setDeliverables([""])

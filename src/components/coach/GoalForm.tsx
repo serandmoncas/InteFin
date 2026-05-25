@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { toast } from "sonner"
 import { createGoal } from "@/actions/goals"
 
 interface GoalFormProps {
@@ -25,6 +26,7 @@ export function GoalForm({ clientId, onSaved }: GoalFormProps) {
     startTransition(async () => {
       const res = await createGoal({ clientId, title, description, targetAmount, targetDate })
       if (res.error) { setError(res.error); return }
+      toast.success("Meta guardada")
       setTitle("")
       setDescription("")
       setTargetAmount("")

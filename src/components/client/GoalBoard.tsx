@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { toast } from "sonner"
 import { updateGoalStatus } from "@/actions/goals"
 import type { Goal } from "@/lib/supabase/types"
 
@@ -35,10 +36,12 @@ function GoalCard({ goal }: { goal: Goal }) {
 
   function advance() {
     const next = goal.status === "pending" ? "in_progress" : "completed"
+    const successMsg = next === "in_progress" ? "Meta iniciada" : "¡Meta completada! 🎉"
     setActionError("")
     startTransition(async () => {
       const res = await updateGoalStatus(goal.id, next)
-      if (res.error) setActionError(res.error)
+      if (res.error) { setActionError(res.error); return }
+      toast.success(successMsg)
     })
   }
 

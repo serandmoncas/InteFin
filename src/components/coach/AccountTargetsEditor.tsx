@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { toast } from "sonner"
 import { updateAccountTarget, toggleRetiroActive } from "@/actions/accounts"
 import type { FinancialAccount, AccountType } from "@/lib/supabase/types"
 
@@ -61,13 +62,16 @@ function AccountRow({ account }: { account: FinancialAccount }) {
     startTransition(async () => {
       const res = await updateAccountTarget(account.id, target)
       if (res.error) { setError(res.error); return }
+      toast.success("Target actualizado")
       setEditing(false)
     })
   }
 
   function toggleActive() {
     startTransition(async () => {
-      await toggleRetiroActive(account.id, !account.is_active)
+      const res = await toggleRetiroActive(account.id, !account.is_active)
+      if (res?.error) { toast.error(res.error); return }
+      toast.success(account.is_active ? "Retiro desactivado" : "Retiro activado")
     })
   }
 

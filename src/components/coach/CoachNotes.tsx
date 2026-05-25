@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import { toast } from "sonner"
 import { updateCoachNotes } from "@/actions/client-notes"
 
 interface CoachNotesProps {
@@ -20,6 +21,7 @@ export function CoachNotes({ clientId, initialNotes }: CoachNotesProps) {
     startTransition(async () => {
       const res = await updateCoachNotes(clientId, notes)
       if (res.error) { setError(res.error); return }
+      toast.success("Notas guardadas")
       setSaved(notes)
       setEditing(false)
     })
