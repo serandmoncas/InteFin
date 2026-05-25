@@ -117,7 +117,7 @@
   - El nav superior usa `hidden sm:flex` — desaparece en pantallas pequeñas
   - Agregar hamburger menu o bottom nav para móvil
 
-- [ ] **UX-07** Skeletons de carga
+- [x] **UX-07** Skeletons de carga *(2026-05-25)*
   - Las páginas muestran vacío mientras cargan datos del servidor
   - Agregar `loading.tsx` en rutas críticas: `/coach/overview`, `/app/dashboard`
 
