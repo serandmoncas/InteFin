@@ -23,7 +23,7 @@ export default function LoginPage() {
     })
 
     if (error) {
-      setError(error.message)
+      setError("No pudimos enviar el link. Revisa el correo e intenta de nuevo.")
     } else {
       setSent(true)
     }
