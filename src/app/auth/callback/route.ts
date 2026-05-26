@@ -2,11 +2,11 @@ import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
 import { type NextRequest, NextResponse } from "next/server"
 import type { Database } from "@/lib/supabase/types"
+import { createAdminClient } from "@/lib/supabase/admin"
 
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get("code")
-  const next = searchParams.get("next") ?? "/"
 
   if (!code) {
     return NextResponse.redirect(`${origin}/auth/login?error=missing_code`)
@@ -50,8 +50,12 @@ export async function GET(request: NextRequest) {
     meta?.coach_id
 
   if (isInvitedClient) {
+    // Use admin client to bypass RLS — the client user doesn't yet have
+    // organization_id on their profile, so regular RLS would block inserts.
+    const admin = createAdminClient()
+
     // Look up existing profile (auto-created by trigger with role=client)
-    const { data: profile } = await supabase
+    const { data: profile } = await admin
       .from("profiles")
       .select("onboarding_completed, organization_id")
       .eq("id", user.id)
@@ -59,7 +63,7 @@ export async function GET(request: NextRequest) {
 
     // Attach to the inviting org if not yet done
     if (!profile?.organization_id) {
-      await supabase
+      const { error: profileUpdateError } = await admin
         .from("profiles")
         .update({
           full_name:       meta.full_name ?? "",
@@ -67,26 +71,32 @@ export async function GET(request: NextRequest) {
           organization_id: meta.organization_id,
         })
         .eq("id", user.id)
+      if (profileUpdateError) {
+        console.error("[callback] profile update failed:", profileUpdateError)
+      }
     }
 
     // Create client_profile if it doesn't exist yet
-    const { data: existingClient } = await supabase
+    const { data: existingClient } = await admin
       .from("client_profiles")
-      .select("id, onboarding_completed: status")
+      .select("id, status")
       .eq("user_id", user.id)
       .maybeSingle()
 
     if (!existingClient) {
-      await supabase.from("client_profiles").insert({
+      const { error: cpError } = await admin.from("client_profiles").insert({
         user_id:         user.id,
         organization_id: meta.organization_id!,
         coach_id:        meta.coach_id!,
         status:          "lead",
       })
+      if (cpError) {
+        console.error("[callback] client_profiles insert failed:", cpError)
+      }
     }
 
     // Mark invitation as used
-    await supabase
+    await admin
       .from("client_invitations")
       .update({ used: true })
       .eq("email", user.email!)
